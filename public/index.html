@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ganit Mitra – CBSE Maths Tutor (Classes 1–10)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f6ff;--card:#fff;--ink:#22254a;--mut:#667;--pri:#4f46e5;--pri2:#7c3aed;--acc:#ffc233;--ok:#17a45b;--bad:#e5484d;--line:#dfe4fb;--ts:80%;--tl:92%;--sh:0 6px 18px rgba(60,70,160,.12)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14162b;--card:#1f2242;--ink:#f1f2ff;--mut:#a9acd0;--pri:#8b84ff;--pri2:#a78bfa;--line:#343870;--ts:35%;--tl:24%;--sh:none}}
+:root[data-theme="dark"]{--bg:#14162b;--card:#1f2242;--ink:#f1f2ff;--mut:#a9acd0;--pri:#8b84ff;--pri2:#a78bfa;--line:#343870;--ts:35%;--tl:24%;--sh:none}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Baloo 2","Nunito","Segoe UI",system-ui,sans-serif;font-weight:500}
+.w{max-width:820px;margin:0 auto;padding:14px 14px 30px}
+.hero{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border-radius:24px;padding:18px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.hero:after{content:"➕ ➖ ✖️ ➗";position:absolute;right:-6px;top:-8px;font-size:34px;opacity:.14;letter-spacing:10px;transform:rotate(-8deg);width:150px}
+.hrow{display:flex;gap:14px;align-items:center}
+.mas{font-size:58px;line-height:1;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.mas,.pop{animation:none}}
+h1{font-size:28px;margin:0;font-weight:800;line-height:1.1}
+.sub{opacity:.92;font-size:15px}
+.stat{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.stars{background:var(--acc);color:#4a3300;border-radius:20px;padding:3px 14px;font-weight:800}
+.lvw{flex:1;min-width:150px;font-size:14px}.bw{background:rgba(255,255,255,.3);border-radius:10px;height:10px;margin-top:3px;overflow:hidden}
+#bar{height:100%;width:0;background:var(--acc);border-radius:10px;transition:width .4s}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center}
+button,select,input{font:inherit;color:inherit}
+.pill{border:2px solid var(--line);background:var(--card);border-radius:22px;padding:6px 16px;cursor:pointer;font-weight:700;box-shadow:var(--sh)}
+.pill.on{background:var(--pri);border-color:var(--pri);color:#fff}
+#cls .pill{font-size:19px;padding:8px 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin:12px 0;box-shadow:var(--sh)}
+.card h3{margin:0 0 8px;font-size:21px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.ch{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid hsl(var(--h) 70% 70%);background:hsl(var(--h) var(--ts) var(--tl));border-radius:16px;padding:10px 12px;cursor:pointer;font-weight:700;color:var(--ink);transition:transform .15s}
+.ch:hover,.ch:focus-visible{transform:translateY(-3px)}
+.ic{font-size:30px}.nm{flex:1;line-height:1.2;font-size:16px}.no{background:hsl(var(--h) 65% 45%);color:#fff;border-radius:50%;min-width:26px;height:26px;display:grid;place-items:center;font-size:13px}
+.btn{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;border:0;border-radius:14px;padding:10px 18px;cursor:pointer;font-weight:800;font-size:17px;box-shadow:var(--sh)}
+.btn.alt{background:var(--card);color:var(--pri);border:2px solid var(--pri);box-shadow:none}
+.btn:disabled{opacity:.5}
+.out{white-space:pre-wrap;margin-top:12px;font-size:18px;line-height:1.7}
+.q{font-size:30px;font-weight:800;margin:6px 0 10px;text-align:center}
+.opt{min-width:84px;flex:1;padding:14px;border:3px solid var(--line);background:var(--card);border-radius:16px;cursor:pointer;font-size:26px;font-weight:800;box-shadow:var(--sh)}
+.opt:hover{border-color:var(--pri)}
+.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.bad{background:var(--bad);color:#fff;border-color:var(--bad)}
+.pop{animation:pop .4s;font-size:20px;font-weight:800;color:var(--ok)}
+.msg{padding:10px 14px;border-radius:16px;margin:8px 0;white-space:pre-wrap;max-width:92%}
+.me{background:var(--pri);color:#fff;margin-left:auto}.ai{background:var(--bg);border:1px solid var(--line)}
+.ai:before{content:"🦉 ";font-size:20px}
+.in{display:flex;gap:8px;margin-top:10px}.in input{flex:1;min-width:0;padding:12px;border-radius:14px;border:2px solid var(--line);background:var(--card)}
+.note{color:var(--mut);font-size:14px}
+#ct{font-size:24px;margin:12px 0 4px}
+.stage{min-height:210px;border-radius:18px;background:linear-gradient(var(--bg),var(--card));border:2px dashed var(--line);display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;padding:14px}
+.grp{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-items:center;padding:8px;border-radius:14px;background:rgba(79,70,229,.1);max-width:300px;min-width:60px}
+.it{font-size:34px;display:inline-block;animation:pop .35s;transition:all .6s}.it.hl{transform:scale(1.35);background:var(--acc);border-radius:50%}.it.gone{transform:translateY(-80px) rotate(25deg);opacity:0}
+.cap{font-size:21px;font-weight:700;text-align:center;min-height:60px;margin:10px 0}
+.big{font-size:70px;animation:pop .5s}.stage svg{width:190px;height:190px}.stage .wd{transition:fill .5s}
+.board{flex-direction:column;align-items:stretch;justify-content:flex-start}
+.stp{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:6px 12px;font-size:19px;font-weight:700;animation:pop .4s;text-align:center}.stp .num{color:var(--pri);font-size:1.15em}
+.big2{font-size:34px;font-weight:800;text-align:center;animation:pop .4s}.ans{font-size:32px;font-weight:800;color:var(--ok);text-align:center;animation:pop .5s}
+.nl,.tf,.hands{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}.tf{display:grid;grid-template-columns:repeat(5,36px)}
+.nb,.tf i{min-width:36px;height:36px;border:2px solid var(--line);border-radius:8px;display:grid;place-items:center;font-weight:800;font-style:normal;transition:all .4s}.nb.hl{background:var(--acc);color:#4a3300;transform:scale(1.25)}
+.fg{width:20px;height:76px;background:#f6c8a0;border-radius:10px;transition:all .6s;align-self:flex-end}.fg.fold{height:26px;background:#9aa0b8}
+.vc{font-size:19px;min-height:0}
+.foot{text-align:center;margin-top:18px}
+table td,table th{padding:6px;border-bottom:1px solid var(--line);text-align:center}table td:first-child{text-align:left}
+</style></head><body><div class="w">
+<div class="hero"><div class="hrow"><div class="mas">🦉</div><div><h1>Ganit Mitra</h1><div class="sub">Namaste! 🙏 Let's learn Maths together. Classes 1 to 10 · NCERT</div></div></div>
+<div class="stat"><span class="stars">⭐ <span id="st">0</span></span><div class="lvw"><span id="lv">Level 1</span> · collect 10 ⭐ to level up<div class="bw"><div id="bar"></div></div></div></div></div>
+<h3 style="margin:14px 2px 0">Choose your class</h3>
+<div class="row" id="cls"></div>
+<div class="row"><label class="note">🌐 Language:&nbsp;<select id="lang"><option>English</option><option>Hindi</option><option>Kannada</option><option>Telugu</option><option>Tamil</option></select></label> <label class="note"><input type="checkbox" id="auto" checked> 🔊 Read answers aloud</label> <button class="pill" id="tk">⚡ Easy Tricks</button> <button class="pill" id="rp">👪 Parent report</button> <button class="pill" id="stop">⏹ Stop voice</button></div>
+<div id="list"></div>
+<div id="rep" class="card" style="display:none"></div>
+<div id="trk" class="card" style="display:none"></div>
+<div id="view" style="display:none">
+ <button class="pill" id="back">← All chapters</button>
+ <h2 id="ct"></h2>
+ <div class="row"><button class="pill on" data-t="learn">📖 Explanation</button><button class="pill" data-t="watch">🎬 Watch</button><button class="pill" data-t="notes">📝 Notes</button><button class="pill" data-t="prac">✏️ Practice</button><button class="pill" data-t="ask">💬 Ask Tutor</button></div>
+ <div id="learn" class="card"><button class="btn" id="les">Teach me this chapter</button> <button class="btn alt" id="easy" style="display:none">Explain like I'm 8</button> <button class="btn alt" id="lis" style="display:none">🔊 Listen</button><div class="out" id="lo"></div></div>
+ <div id="watch" class="card" style="display:none"><div class="stage" id="stg"></div><div class="cap" id="cap"></div><div class="row" style="justify-content:center"><button class="btn" id="pl">▶ Play</button><button class="btn alt" id="nw">🔁 New example</button></div><p class="note" style="text-align:center">🔊 Turn on "Read answers aloud" to hear the teacher explain while it plays.</p></div>
+ <div id="notes" class="card" style="display:none"><button class="btn" id="mk">Make my notes</button> <button class="btn alt" id="nl">🔊 Listen</button> <button class="btn alt" id="cp">📋 Copy</button><div class="out" id="no"></div></div>
+ <div id="prac" class="card" style="display:none"></div>
+ <div id="ask" class="card" style="display:none"><div id="chat"></div><div class="in"><input id="ti" placeholder="Type or speak your maths doubt…"><button class="btn alt" id="mic" title="Speak">🎤</button><button class="btn" id="send">Ask</button></div></div>
+</div>
+<p class="note foot">Made for school children · Topics follow NCERT · Practice answers are checked by code. The AI tutor can make mistakes, so please confirm with your teacher. 💙</p>
+</div>
+<script>
+/* kinds: 0 AI-only, 1 add, 2 sub, 3 mul, 4 div, 5 fractions, 6 time */
+const C={1:[["Shapes and Space",0],["Numbers 1 to 9",0],["Addition",1],["Subtraction",2],["Numbers 10 to 20",0],["Time",6],["Measurement",0],["Numbers 21 to 50",0],["Data Handling",0],["Patterns",0],["Numbers",0],["Money",0],["How Many",0]],
+2:[["What is Long, What is Round?",0],["Counting in Groups",0],["How Much Can You Carry?",0],["Counting in Tens",0],["Patterns",0],["Footprints",0],["Jugs and Mugs",0],["Tens and Ones",0],["My Funday",0],["Add our Points",1],["Lines and Lines",0],["Give and Take",2],["The Longest Step",0],["Birds Come, Birds Go",0],["How Many Ponytails?",3]],
+3:[["Where to Look From",0],["Fun with Numbers",0],["Give and Take",2],["Long and Short",0],["Shapes and Designs",0],["Fun with Give and Take",1],["Time Goes On",6],["Who is Heavier?",0],["How Many Times?",3],["Play with Patterns",0],["Jugs and Mugs",0],["Can We Share?",4],["Smart Charts",0],["Rupees and Paise",0]],
+4:[["Building with Bricks",0],["Long and Short",0],["A Trip to Bhopal",0],["Tick-Tick-Tick",6],["The Way the World Looks",0],["The Junk Seller",0],["Jugs and Mugs",0],["Carts and Wheels",0],["Halves and Quarters",5],["Play with Patterns",0],["Tables and Shares",4],["How Heavy? How Light?",0],["Fields and Fences",0],["Smart Charts",0]],
+6:[["Patterns in Mathematics",0],["Lines and Angles",0],["Number Play",0],["Data Handling and Presentation",15],["Prime Time",0],["Perimeter and Area",10],["Fractions",5],["Playing with Constructions",0],["Symmetry",0],["The Other Side of Zero",14]],
+7:[["Integers",14],["Fractions and Decimals",5],["Data Handling",15],["Simple Equations",9],["Lines and Angles",0],["The Triangle and its Properties",0],["Congruence of Triangles",0],["Comparing Quantities",7],["Rational Numbers",0],["Practical Geometry",0],["Perimeter and Area",10],["Algebraic Expressions",0],["Exponents and Powers",8],["Symmetry",0],["Visualising Solid Shapes",0]],
+8:[["Rational Numbers",0],["Linear Equations in One Variable",9],["Understanding Quadrilaterals",0],["Data Handling",15],["Squares and Square Roots",8],["Cubes and Cube Roots",8],["Comparing Quantities",7],["Algebraic Expressions and Identities",0],["Mensuration",10],["Exponents and Powers",8],["Direct and Inverse Proportions",0],["Factorisation",12],["Introduction to Graphs",0],["Playing with Numbers",0]],
+9:[["Number Systems",8],["Polynomials",0],["Coordinate Geometry",0],["Linear Equations in Two Variables",9],["Introduction to Euclid's Geometry",0],["Lines and Angles",0],["Triangles",0],["Quadrilaterals",0],["Circles",0],["Heron's Formula",10],["Surface Areas and Volumes",10],["Statistics",15]],
+10:[["Real Numbers",0],["Polynomials",12],["Pair of Linear Equations in Two Variables",9],["Quadratic Equations",12],["Arithmetic Progressions",11],["Triangles",0],["Coordinate Geometry",0],["Introduction to Trigonometry",13],["Some Applications of Trigonometry",13],["Circles",0],["Areas Related to Circles",10],["Surface Areas and Volumes",10],["Statistics",15],["Probability",0]],
+5:[["The Fish Tale",0],["Shapes and Angles",0],["How Many Squares?",0],["Parts and Wholes",5],["Does it Look the Same?",0],["Be My Multiple, I'll be Your Factor",3],["Can You See the Pattern?",0],["Mapping Your Way",0],["Boxes and Sketches",0],["Tenths and Hundredths",5],["Area and its Boundary",0],["Smart Charts",0],["Ways to Multiply and Divide",4],["How Big? How Heavy?",0]]};
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function gen(k,c){const s=c<3?[9,20]:c<4?[99,999]:[999,9999];let a,b,q,ans;
+ if(k==1){a=R(1,s[0]);b=R(1,s[0]);q=a+" + "+b;ans=a+b}
+ else if(k==2){a=R(2,s[0]);b=R(1,a);q=a+" − "+b;ans=a-b}
+ else if(k==3){a=R(2,c<3?10:c<4?12:99);b=R(2,c<3?10:12);q=a+" × "+b;ans=a*b}
+ else if(k==5){b=[2,4,3,5,10][R(0,c<4?1:4)];a=R(1,b-1);const n=b*R(1,c<4?5:10);q=`What is ${a}/${b} of ${n}?`;ans=n/b*a}
+ else if(k==6){if(c>=3&&Math.random()<.6){a=R(1,5);q=`How many minutes are in ${a} hour${a>1?"s":""}?`;ans=a*60}else{a=R(1,4);q=`How many days are in ${a} week${a>1?"s":""}?`;ans=a*7}}
+ else if(k==7){const p=[10,20,25,50,5,15,40][R(0,6)],n=R(1,20)*20;q=`What is ${p}% of ${n}?`;ans=n*p/100}
+ else if(k==8){const m=R(2,c<8?15:c<10?25:30),t=Math.random();if(t<.4){q=`What is ${m}²?`;ans=m*m}else if(t<.8){q=`What is √${m*m}?`;ans=m}else{const x=R(2,c<8?6:9);q=`What is ${x}³?`;ans=x**3}}
+ else if(k==9){const x=R(2,12),m=R(2,c<8?5:9),e=R(1,15);q=`Solve: ${m}x + ${e} = ${m*x+e}. So x = ?`;ans=x}
+ else if(k==10){const t=R(0,3);a=R(3,15);b=R(2,12);if(t==0){q=`Perimeter of a rectangle ${a} cm by ${b} cm (in cm)?`;ans=2*(a+b)}else if(t==1){q=`Area of a rectangle ${a} cm by ${b} cm (in cm²)?`;ans=a*b}else if(t==2){b=R(2,10)*2;q=`Area of a triangle, base ${b} cm and height ${a} cm (in cm²)?`;ans=b*a/2}else{q=`Area of a square of side ${a} cm (in cm²)?`;ans=a*a}}
+ else if(k==11){const f=R(1,10),d=R(2,8),n=R(8,20);q=`In the AP ${f}, ${f+d}, ${f+2*d}, … find the ${n}th term.`;ans=f+(n-1)*d}
+ else if(k==12){const x=R(1,9),y=R(1,9);q=`Find the larger root of x² − ${x+y}x + ${x*y} = 0`;ans=Math.max(x,y)}
+ else if(k==13){const x=[["10 × sin 30°",5],["8 × cos 60°",4],["7 × tan 45°",7],["sin 90° + cos 0°",2],["12 × sin 30°",6],["6 × cos 0°",6],["20 × sin 30° × tan 45°",10]][R(0,6)];q=`Find the value of ${x[0]}`;ans=x[1]}
+ else if(k==14){const x=R(-12,12),y=R(-12,12),t=R(0,2);q=t==0?`(${x}) + (${y})`:t==1?`(${x}) − (${y})`:`(${x%10}) × (${y%10})`;ans=t==0?x+y:t==1?x-y:(x%10)*(y%10)}
+ else if(k==15){let u;do{u=[R(2,20),R(2,20),R(2,20),R(2,20)];u.push(5*R(6,15)-u.reduce((x,y)=>x+y,0))}while(u[4]<1||u[4]>30);q=`Find the mean of ${u.join(", ")}`;ans=u.reduce((x,y)=>x+y,0)/5}
+ else{b=R(2,c<4?9:12);ans=R(2,c<4?12:99);a=b*ans;q=a+" ÷ "+b}
+ const st=ans>50?10:1,o=new Set([ans]);while(o.size<4){{const v=ans+R(1,4)*(Math.random()<.5?-1:1)*st;if(v>=0||k==14)o.add(v)}}
+ return{q,ans,o:[...o].sort(()=>Math.random()-.5)}}
+let cl=1,ch=null,ci=0,stars=0,hist=[],busy=false,ST={};
+try{const j=JSON.parse(localStorage.getItem("gm")||"{}");ST=j.s||{};stars=j.n||0}catch(e){}
+const save=()=>{try{localStorage.setItem("gm",JSON.stringify({s:ST,n:stars}))}catch(e){}};
+function rec(ok){const k=cl+"-"+ci,r=ST[k]||(ST[k]=[0,0]);r[0]++;if(ok)r[1]++;save()}
+const $=i=>document.getElementById(i);
+function lvl(){$("lv").textContent="Level "+(Math.floor(stars/10)+1);$("bar").style.width=(stars%10)*10+"%"}
+function setStars(n){stars=n;$("st").textContent=n;lvl();save()}
+const IC=[[/probab/i,"🎲"],[/trigon/i,"📐"],[/algebra|equation|polynom|factor|identit|expression/i,"🧩"],[/triang|circle|quadrilat|euclid|construct|symmetr|solid|coordinate/i,"📐"],[/statist|graph/i,"📊"],[/prime|real|rational|integer|zero|root|power|play/i,"🔢"],[/compar|proportion/i,"💯"],[/heron|mensur/i,"📏"],[/shape|design|look|brick|angle|sketch|square/i,"🔷"],[/time|tick/i,"⏰"],[/money|rupee|junk/i,"💰"],[/pattern/i,"🎨"],[/chart|data/i,"📊"],[/jug|mug/i,"🥛"],[/heav|carry|weigh/i,"⚖️"],[/long|short|measure|step|big/i,"📏"],[/fish/i,"🐟"],[/field|area/i,"🌾"],[/map|trip/i,"🗺️"],[/share|half|quarter|part|tenth/i,"🍕"],[/give|take|subtract/i,"🤝"],[/add|point|fun|number|count|tens|ones/i,"🔢"],[/multipl|times|table|pony|cart/i,"✖️"],[/divi/i,"➗"],[/bird|foot|furry/i,"🐾"]];
+const icon=n=>(IC.find(x=>x[0].test(n))||[0,"📘"])[1];
+function drawCls(){$("cls").innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="pill ${n==cl?'on':''}" data-c="${n}">Class ${n}</button>`).join("");
+ $("list").innerHTML=`<div class="card"><h3>📚 Class ${cl} chapters</h3><div class="grid">`+C[cl].map((c,i)=>`<button class="ch" data-i="${i}" style="--h:${(i*47+cl*30)%360}"><span class="ic">${icon(c[0])}</span><span class="nm">${c[0]}</span><span class="no">${i+1}</span></button>`).join("")+"</div></div>"}
+$("cls").onclick=e=>{const n=e.target.dataset.c;if(n){cl=+n;RUN++;drawCls();$("rep").style.display="none";if($("trk").style.display=="block")tricks();else{$("view").style.display="none";$("list").style.display="block"}}};
+$("list").onclick=e=>{const t=e.target.closest("[data-i]");if(!t)return;const i=t.dataset.i;ci=+i;ch=C[cl][i];ex=null;document.querySelector("[data-t=watch]").style.display=cl>=6?"none":"";$("list").style.display="none";$("view").style.display="block";
+ $("ct").textContent=`${icon(ch[0])} Class ${cl} · ${ch[0]}`;$("lo").textContent="";$("no").textContent="";$("easy").style.display="none";$("chat").innerHTML="";hist=[];tab("learn");}
+$("back").onclick=()=>{RUN++;ex=null;window.speechSynthesis&&speechSynthesis.cancel();$("lis").style.display="none";$("view").style.display="none";$("list").style.display="block"};
+function tab(t){RUN++;window.speechSynthesis&&speechSynthesis.cancel();if(t=="watch"){$("stg").innerHTML='<span class="note">Press ▶ Play to watch the lesson 🎬</span>';$("cap").textContent=""}
+ ["learn","watch","notes","prac","ask"].forEach(x=>$(x).style.display=x==t?"block":"none");
+ document.querySelectorAll("[data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t==t));if(t=="prac")prac();if(t=="notes"&&!$("no").textContent)$("no").textContent=NT[cl+"-"+ci]||"Tap “Make my notes” to get neat study notes for this chapter 📝"}
+document.querySelector("#view .row").onclick=e=>{if(e.target.dataset.t)tab(e.target.dataset.t)};
+const SYS=()=>`You are Ganit Mitra, a loving, patient classroom maths teacher talking ALOUD to a CBSE (NCERT) Class ${cl} child in India. Reply in ${$("lang").value}. Speak like a real teacher in class, not like a textbook: warm spoken style ("Okay children, listen carefully..."), short sentences, small questions with a pause ("Can you guess?"), and always a real-life story or example (chocolates, cricket, rupees, mangoes) worked through slowly step by step. Say signs in words (plus, minus, times, divided by, half) and never use bullet points, markdown, tables or symbols. When a child asks a problem, give a hint first, then guide. Keep it about 120 words unless teaching a full lesson. Only maths; stay kind and child-safe.`;
+async function S(){return async(turns,o)=>{const m=typeof turns=="string"?[{role:"user",content:turns}]:turns;
+ const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:m})});
+ if(!r.ok)throw{code:r.status==429?"rate_limited":"error"};const j=await r.json();o&&o.onText&&o.onText({text:j.text});return{text:j.text}}}
+const LC={English:"en-IN",Hindi:"hi-IN",Kannada:"kn-IN",Telugu:"te-IN",Tamil:"ta-IN"};
+function clean(t){return t.replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu,"").replace(/[*#_`>|~]/g,"").replace(/^\s*[-•]\s*/gm,"")
+ .replace(/(\d)\s*\/\s*(\d)/g,"$1 by $2").replace(/\s*×\s*/g," times ").replace(/(\d)\s*[x*]\s*(?=\d)/g,"$1 times ").replace(/\s*÷\s*/g," divided by ").replace(/\s*[+]\s*/g," plus ").replace(/\s*[−–]\s*(?=\d)/g," minus ").replace(/\s*=\s*/g," equals ").replace(/\n+/g,". ")}
+function speak(t){const y=window.speechSynthesis;if(!y||!t)return;y.cancel();const L=LC[$("lang").value],V=y.getVoices().filter(x=>x.lang.replace("_","-").slice(0,2)==L.slice(0,2));
+ const v=V.find(x=>/natural|neural|online|google|female|heera|veena|zira/i.test(x.name)&&x.lang.replace("_","-")==L)||V.find(x=>x.lang.replace("_","-")==L)||V[0];
+ clean(t).split(/(?<=[.!?।])\s+/).filter(x=>x.trim().length>1).forEach(x=>{const u=new SpeechSynthesisUtterance(x);u.lang=L;u.rate=.85;u.pitch=1.1;if(v)u.voice=v;y.speak(u)})}
+$("stop").onclick=()=>window.speechSynthesis&&speechSynthesis.cancel();
+$("lis").onclick=()=>speak($("lo").textContent);
+$("mic").onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){$("ti").placeholder="Voice input isn't supported here – please type.";return}
+ const r=new R();r.lang=LC[$("lang").value];r.onresult=e=>{$("ti").value=e.results[0][0].transcript;send()};$("mic").textContent="👂";r.onend=()=>$("mic").textContent="🎤";try{r.start()}catch(e){}};
+async function ai(turns,el,btns,q){const s=await S();if(!s){el.textContent="AI tutor is not available.";return}
+ btns.forEach(b=>b.disabled=true);el.textContent="Thinking…";
+ try{const r=await s(turns,{cache:false,onText:t=>{el.textContent=t.text}});el.textContent=r.text;if($("auto").checked&&!q)speak(r.text);return r.text}
+ catch(e){el.textContent=e.code=="rate_limited"?"Too many questions. Please wait a minute and try again. 🙏":"Oops, the tutor is busy. Try again in a moment."}
+ finally{btns.forEach(b=>b.disabled=false)}}
+$("les").onclick=async()=>{await ai(SYS()+`\n\nTeach the chapter "${ch[0]}" like a teacher in class, about 200 words: greet the children, begin with an everyday story, explain the idea, work out one example slowly with real numbers, then give one tiny question for the child to try (don't give its answer) and end with encouragement.`,$("lo"),[$("les")]);$("easy").style.display="inline-block";$("lis").style.display="inline-block"};
+$("easy").onclick=()=>ai(SYS()+`\n\nExplain "${ch[0]}" again like a kind teacher to an 8 year old, with a brand new story, a fresh worked example and even simpler words.`,$("lo"),[$("easy")]);
+function prac(){const k=ch[1],p=$("prac");
+ if(!k){p.innerHTML=`<p>Practice for this chapter is done with the tutor 🧑‍🏫</p><button class="btn" id="gq">Give me a question</button><div class="out" id="go"></div>`;
+  $("gq").onclick=()=>ai(SYS()+`\n\nGive me ONE fun practice question on "${ch[0]}". Don't reveal the answer; ask me to try.`,$("go"),[$("gq")]);return}
+ const g=gen(k,cl);p.innerHTML=`<div class="q">${g.q}${/[?]$/.test(g.q)?"":" = ?"}</div><div class="row">${g.o.map(o=>`<button class="opt" data-v="${o}">${o}</button>`).join("")}</div><div id="fb"></div>`;
+ let done=false;p.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(done)return;const v=+b.dataset.v;rec(v==g.ans);
+  if(v==g.ans){done=true;b.classList.add("ok");setStars(stars+1);$("fb").innerHTML=`<p class="pop">🎉 Shabash! Correct! +1 ⭐</p><button class="btn" id="nx">Next</button>`;$("nx").onclick=prac}
+  else{b.classList.add("bad");b.disabled=true;$("fb").innerHTML=`<p>Not quite, try again! 💪</p><button class="btn alt" id="hn">Need a hint?</button><div class="out" id="ho"></div>`;
+   $("hn").onclick=()=>ai(SYS()+`\n\nGive only a HINT (not the answer) for: ${g.q}`,$("ho"),[$("hn")])}})}
+async function send(){const v=$("ti").value.trim();if(!v||busy)return;$("ti").value="";busy=true;
+ const c=$("chat"),m=document.createElement("div");m.className="msg me";m.textContent=v;c.appendChild(m);
+ const a=document.createElement("div");a.className="msg ai";c.appendChild(a);hist.push({role:"user",content:v});
+ const turns=hist.map((h,i)=>i==0?{role:"user",content:SYS()+`\nChapter: ${ch[0]}.\n\nChild asks: `+h.content}:h);
+ const t=await ai(turns,a,[$("send")]);
+ if(t){hist.push({role:"assistant",content:t});const b=document.createElement("button");b.className="pill";b.textContent="🔊 Listen";b.onclick=()=>speak(t);a.appendChild(document.createElement("br"));a.appendChild(b)}else hist.pop();busy=false}
+$("send").onclick=send;$("ti").onkeydown=e=>{if(e.key=="Enter")send()};
+function report(){let rows="",T=0,Cn=0;const weak=[];
+ for(const k in ST){const[c,i]=k.split("-"),[t,o]=ST[k],n=C[c][i][0],p=Math.round(100*o/t);T+=t;Cn+=o;
+  const L=t<3?"Just started":p>=80?"💪 Strong":p>=60?"👍 Okay":"🌱 Needs practice";if(t>=3&&p<60)weak.push(`Class ${c} ${n}`);
+  rows+=`<tr><td>Class ${c} · ${n}</td><td>${o}/${t}</td><td>${p}%</td><td>${L}</td></tr>`}
+ $("rep").innerHTML=`<h2 style="margin:0">👪 Parent report</h2><p>⭐ Stars: <b>${stars}</b> · Questions tried: <b>${T}</b> · Correct: <b>${Cn}</b></p>`+
+ (rows?`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><tr><th align=left>Chapter</th><th>Score</th><th>%</th><th align=left>Level</th></tr>${rows}</table></div>`:"<p>No practice yet. Ask your child to try some sums!</p>")+
+ `<div class="row"><button class="btn" id="sm">✨ AI summary for parent</button><button class="btn alt" id="cr">Close</button><button class="pill" id="rs">Reset data</button></div><div class="out" id="so"></div>`;
+ $("cr").onclick=()=>{$("rep").style.display="none";$("list").style.display="block"};
+ $("rs").onclick=()=>{if(confirm("Erase all progress?")){ST={};stars=0;setStars(0);report()}};
+ $("sm").onclick=()=>ai(`You are writing for a parent of a CBSE primary-school child in India. In ${$("lang").value}, in 4 short friendly sentences, summarise this maths practice record, name strengths and weak chapters, and suggest one simple home activity. Data: stars ${stars}, tried ${T}, correct ${Cn}, weak chapters: ${weak.join(", ")||"none yet"}. Per chapter [correct,tried]: ${JSON.stringify(ST)}`,$("so"),[$("sm")])}
+let NT={};try{NT=JSON.parse(localStorage.getItem("gmn")||"{}")}catch(e){}
+$("mk").onclick=async()=>{const k=cl+"-"+ci,t=await ai(`You are a CBSE (NCERT) maths teacher making neat revision notes for a Class ${cl} child in India, in ${$("lang").value}. Chapter: "${ch[0]}". Use plain text only (no markdown symbols, no tables), simple words, and exactly these parts, each heading on its own line:\nWhat we learn: 1 or 2 lines.\nKey points: 4 to 5 lines, each starting with •.\nRemember: one easy rule or trick.\nSolved example 1: with steps, using words for signs.\nSolved example 2: with steps.\nTry yourself: 2 short questions without answers.\nNew words: 2 or 3 maths words with meanings.\nKeep it under 220 words.`,$("no"),[$("mk")],true);
+ if(t){NT[k]=t;try{localStorage.setItem("gmn",JSON.stringify(NT))}catch(e){}}};
+$("nl").onclick=()=>speak($("no").textContent);
+$("cp").onclick=async()=>{try{await navigator.clipboard.writeText($("no").textContent);$("cp").textContent="✅ Copied"}catch(e){$("cp").textContent="Select & copy"}setTimeout(()=>$("cp").textContent="📋 Copy",1500)};
+const SP=ms=>new Promise(r=>setTimeout(r,ms));let RUN=0,ex=null;
+const OB=[["🍎","apples","सेब"],["🥭","mangoes","आम"],["🍫","chocolates","चॉकलेट"],["⚽","balls","गेंदें"]];
+const SH=[["🔴","circle","गोल","round like a ball"],["🟦","square","वर्ग","same on all four sides"],["🔺","triangle","त्रिभुज","with three corners"],["⭐","star","तारा","bright in the sky"]];
+function say(t,L){return new Promise(r=>{const y=window.speechSynthesis,ms=t.length*85+1400;if(!y||!$("auto").checked){setTimeout(r,ms);return}
+ const u=new SpeechSynthesisUtterance(clean(t));u.lang=L;u.rate=.85;u.pitch=1.1;const v=y.getVoices().find(x=>x.lang.replace("_","-")==L);if(v)u.voice=v;let d=0;const f=()=>{d||(d=1,r())};u.onend=f;setTimeout(f,ms+4000);y.speak(u)})}
+function mk(e,n){const d=document.createElement("div");d.className="grp";for(let i=0;i<n;i++)d.appendChild(it(e));return d}
+function it(e){const s=document.createElement("span");s.className="it";s.textContent=e;return s}
+function newEx(){const K=ch[1],o=OB[R(0,3)];
+ if(K==1)return{o,a:R(2,cl<2?5:8),b:R(2,cl<2?4:7)};if(K==2){const a=R(4,12);return{o,a,b:R(1,a-2)}}
+ if(K==3)return{o,a:R(2,5),b:R(2,6)};if(K==4){const b=R(2,5),q=R(2,6);return{o,b,q,n:b*q}}
+ if(K==5){const b=[2,3,4,5,8][R(0,4)];return{o,a:R(1,b-1),b}}
+ if(K==6)return{o,h:R(2,4),w:R(2,3)};return{o,n:R(5,10)}}
+async function play(){const id=++RUN,y=window.speechSynthesis;y&&y.cancel();if(!ex)ex=newEx();const st=$("stg");st.innerHTML="";
+ const hi=$("lang").value=="Hindi",L=hi?"hi-IN":"en-IN",T=(e,h)=>hi?h:e,K=ch[1],{o,a,b,q,n,h,w}=ex,nm=hi?o[2]:o[1],em=o[0],ok=()=>{if(id!==RUN)throw 0};
+ const cap=async t=>{ok();$("cap").textContent=t;await say(t,L);ok()},wt=async m=>{await SP(m);ok()},add=e=>(st.appendChild(e),e);
+ try{
+ if(K==1){const A=add(mk(em,a));await cap(T(`We have ${a} ${nm}.`,`हमारे पास ${a} ${nm} हैं।`));const B=add(mk(em,b));await cap(T(`Now ${b} more ${nm} come.`,`अब ${b} और ${nm} आए।`));
+  while(B.firstChild){A.appendChild(B.firstChild);await wt(250)}B.remove();await cap(T("Let us count them together.","चलो साथ में गिनते हैं।"));
+  for(const c of A.children){c.classList.add("hl");$("cap").textContent=[...A.children].indexOf(c)+1;await wt(350)}
+  await cap(T(`${a} plus ${b} equals ${a+b}. Shabash!`,`${a} जमा ${b} बराबर ${a+b}। शाबाश!`))}
+ else if(K==2){const A=add(mk(em,a));await cap(T(`We have ${a} ${nm}.`,`हमारे पास ${a} ${nm} हैं।`));await cap(T(`${b} of them are taken away.`,`इनमें से ${b} ले लिए गए।`));
+  for(let i=0;i<b;i++){A.children[a-1-i].classList.add("gone");await wt(400)}await wt(600);[...A.querySelectorAll(".gone")].forEach(x=>x.remove());
+  await cap(T(`${a} minus ${b} equals ${a-b}. Shabash!`,`${a} घटा ${b} बराबर ${a-b}। शाबाश!`))}
+ else if(K==3){await cap(T(`${a} plates, and ${b} ${nm} on each plate.`,`${a} थालियाँ, हर थाली में ${b} ${nm}।`));const G=[];for(let i=0;i<a;i++)G.push(add(mk(em,0)));
+  for(let j=0;j<b;j++)for(const g of G){g.appendChild(it(em));await wt(180)}
+  await cap(T("Let us count all of them.","चलो सब गिनते हैं।"));let c=0;for(const x of st.querySelectorAll(".it")){x.classList.add("hl");$("cap").textContent=++c;await wt(120)}
+  await cap(T(`${a} times ${b} equals ${a*b}. Shabash!`,`${a} गुणा ${b} बराबर ${a*b}। शाबाश!`))}
+ else if(K==4){const P=add(mk(em,n));await cap(T(`We have ${n} ${nm}. Share them equally among ${b} friends.`,`हमारे पास ${n} ${nm} हैं। इन्हें ${b} दोस्तों में बराबर बाँटो।`));
+  const F=[];for(let i=0;i<b;i++){const g=mk("🧒",0);g.firstChild&&0;g.appendChild(it("🧒"));g.style.flexDirection="column";F.push(add(g))}
+  for(let i=0;i<n;i++){const x=P.lastChild;x.style.animation="none";F[i%b].appendChild(x);await wt(260)}await wt(300);P.remove();
+  await cap(T(`Each friend gets ${q}. ${n} divided by ${b} equals ${q}. Shabash!`,`हर दोस्त को ${q} मिले। ${n} भाग ${b} बराबर ${q}। शाबाश!`))}
+ else if(K==5){const f=i=>{const r=Math.PI/180,t=360/b,x=d=>50+46*Math.sin(d*r),z=d=>50-46*Math.cos(d*r);return`<path class="wd" id="w${i}" d="M50 50 L${x(i*t)} ${z(i*t)} A46 46 0 0 1 ${x((i+1)*t)} ${z((i+1)*t)} Z" fill="#ffe3a8" stroke="#c2410c" stroke-width="1.5"/>`};
+  st.innerHTML="<svg viewBox='0 0 100 100'>"+[...Array(b).keys()].map(f).join("")+"</svg>";await cap(T(`This pizza is cut into ${b} equal slices.`,`यह पिज़्ज़ा ${b} बराबर टुकड़ों में कटा है।`));
+  for(let i=0;i<a;i++){$("w"+i).setAttribute("fill","#f97316");await wt(700)}
+  await cap(T(`We take ${a} slices out of ${b}. That is ${a} by ${b} of the pizza. Shabash!`,`${b} में से ${a} टुकड़े लिए। यह पिज़्ज़ा का ${a} बटा ${b} भाग है। शाबाश!`))}
+ else if(K==6&&cl>=3){st.innerHTML=`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#fff" stroke="#4f46e5" stroke-width="3"/><text x="50" y="16" text-anchor="middle" font-size="9">12</text><text x="88" y="53" text-anchor="middle" font-size="9">3</text><text x="50" y="94" text-anchor="middle" font-size="9">6</text><text x="12" y="53" text-anchor="middle" font-size="9">9</text><line id="hh" x1="50" y1="50" x2="50" y2="28" stroke="#222" stroke-width="4" stroke-linecap="round" style="transform-origin:50px 50px;transition:transform 3s linear"/><line id="mh" x1="50" y1="50" x2="50" y2="12" stroke="#e5484d" stroke-width="2.5" stroke-linecap="round" style="transform-origin:50px 50px;transition:transform 3s linear"/></svg>`;
+  await cap(T("The long red hand is the minute hand. It starts at 12.","लंबी लाल सुई मिनट की सुई है। यह 12 से शुरू होती है।"));$("mh").style.transform="rotate(360deg)";$("hh").style.transform="rotate(30deg)";
+  await cap(T("When it goes once around the clock, one hour is over. One hour is 60 minutes.","जब यह घड़ी का एक चक्कर लगाती है, तो एक घंटा पूरा होता है। एक घंटा 60 मिनट का होता है।"));
+  await cap(T(`So ${h} hours is ${h} times 60, which equals ${h*60} minutes. Shabash!`,`तो ${h} घंटे यानी ${h} गुणा 60, बराबर ${h*60} मिनट। शाबाश!`))}
+ else if(K==6){const D=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];await cap(T("Let us see the days of one week.","चलो एक सप्ताह के दिन देखते हैं।"));
+  for(const d of D){add(Object.assign(document.createElement("div"),{className:"grp",textContent:"📅 "+d}));await wt(400)}
+  await cap(T(`One week has 7 days. So ${w} weeks have ${w} times 7, which equals ${w*7} days. Shabash!`,`एक सप्ताह में 7 दिन होते हैं। तो ${w} सप्ताह में ${w} गुणा 7 बराबर ${w*7} दिन। शाबाश!`))}
+ else if(/shape|design|brick|angle|square|look|sketch/i.test(ch[0])){for(const x of SH){const d=add(document.createElement("div"));d.className="grp";d.innerHTML=`<span class="big">${x[0]}</span><b>${hi?x[2]:x[1]}</b>`;
+   await cap(T(`This is a ${x[1]}. It is ${x[3]}.`,`यह ${x[2]} है।`))}await cap(T("Look around you. Can you find these shapes in your classroom? Shabash!","अपने चारों ओर देखो। क्या कक्षा में ये आकार मिलते हैं? शाबाश!"))}
+ else{const A=add(mk(em,0));await cap(T(`Let us count ${nm} together.`,`चलो ${nm} साथ में गिनते हैं।`));for(let i=1;i<=n;i++){A.appendChild(it(em));$("cap").textContent=i;await wt(450)}
+  await cap(T(`There are ${n} ${nm} in all. Shabash!`,`कुल ${n} ${nm} हैं। शाबाश!`))}
+ }catch(e){if(e!==0)throw e}}
+$("pl").onclick=play;$("nw").onclick=()=>{ex=null;play()};
+const f=(q,s,a)=>({q,s,a});
+const TR=[
+{t:"Count on from the bigger number",lo:1,hi:2,r:"Keep the bigger number in your head and count on the smaller one using your fingers.",g:()=>{const a=R(6,9),b=R(2,4);return f(a+" + "+b,`Start at ${a}. Count on ${b}: ${Array.from({length:b},(_,i)=>a+i+1).join(", ")}`,a+b)}},
+{t:"Make 10 first",lo:1,hi:3,r:"Break the second number to fill up the first one to 10.",g:()=>{const a=R(6,9),b=R(11-a,9),k=10-a;return f(a+" + "+b,`${a} + ${k} = 10. Left over: ${b} − ${k} = ${b-k}. So 10 + ${b-k} = ${a+b}`,a+b)}},
+{t:"Table of 9 on your fingers",lo:2,hi:4,r:"Hold up 10 fingers. For 9 × n, fold down the nth finger. Fingers on the left are tens, fingers on the right are ones.",g:()=>{const n=R(2,9);return f("9 × "+n,`Fold down finger ${n}. Left side has ${n-1}, right side has ${10-n}. Read it as ${n-1}${10-n}`,9*n)}},
+{t:"Add 9 or 99 quickly",lo:2,hi:8,r:"Add 10 (or 100) and then take away 1.",g:c=>{const n=R(12,c<4?60:480),k=c<5?9:99,u=k+1;return f(n+" + "+k,`${n} + ${u} = ${n+u}. Take away 1 → ${n+k}`,n+k)}},
+{t:"Multiply by 5",lo:3,hi:10,r:"Multiply by 10, then take half.",g:c=>{const n=R(2,c<5?20:90)*2;return f(n+" × 5",`${n} × 10 = ${n*10}. Half of ${n*10} = ${n*5}`,n*5)}},
+{t:"Multiply by 9",lo:3,hi:10,r:"Multiply by 10, then take away the number once.",g:c=>{const n=R(3,c<5?12:60);return f(n+" × 9",`${n} × 10 = ${n*10}. Minus ${n} = ${n*9}`,n*9)}},
+{t:"Doubling and halving",lo:4,hi:10,r:"Halve one number and double the other. The answer stays the same.",g:()=>{const a=R(2,9)*2,b=R(3,9)*5;return f(a+" × "+b,`${a} × ${b} = ${a/2} × ${b*2} = ${a*b}`,a*b)}},
+{t:"Multiply by 11 (two digits)",lo:4,hi:10,r:"Keep the first digit, put the sum of both digits in the middle, keep the last digit. If the sum is 10 or more, carry 1.",g:()=>{const a=R(1,8),b=R(1,9-a);return f((a*10+b)+" × 11",`Middle: ${a} + ${b} = ${a+b}. Write ${a}, ${a+b}, ${b} → ${a}${a+b}${b}`,(a*10+b)*11)}},
+{t:"Multiply by 25",lo:4,hi:10,r:"Multiply by 100, then divide by 4.",g:()=>{const n=R(2,30);return f(n+" × 25",`${n} × 100 = ${n*100}. ${n*100} ÷ 4 = ${n*25}`,n*25)}},
+{t:"Divisibility by 3 and 9",lo:4,hi:8,r:"Add all the digits. If the sum is in the table of 3 (or 9), the number is too.",g:()=>{const n=R(120,980),d=String(n).split("").map(Number),m=d.reduce((x,y)=>x+y,0);return f(`Is ${n} divisible by 3?`,`${d.join(" + ")} = ${m}. ${m%3?m+" is not in the table of 3.":m+" is in the table of 3."}${m%9==0?" It is also in the table of 9, so divisible by 9 too.":""}`,m%3?"No":"Yes")}},
+{t:"Square a number ending in 5",lo:5,hi:10,r:"For n5², multiply n × (n + 1), then write 25 at the end.",g:()=>{const n=R(1,9);return f(n+"5²",`${n} × ${n+1} = ${n*(n+1)}. Write 25 after it → ${n*(n+1)}25`,(n*10+5)**2)}},
+{t:"Add numbers 1 to n (Gauss trick)",lo:5,hi:10,r:"1 + 2 + … + n = n × (n + 1) ÷ 2. The first and last numbers pair up to the same total.",g:()=>{const n=R(5,50);return f(`1 + 2 + 3 + … + ${n}`,`${n} × ${n+1} ÷ 2 = ${n*(n+1)} ÷ 2 = ${n*(n+1)/2}`,n*(n+1)/2)}},
+{t:"Find 5%, 15%, 20%, 30% fast",lo:6,hi:10,r:"10% = divide by 10. 5% = half of 10%. 15% = 10% + 5%. 20% = double 10%. 30% = three times 10%.",g:()=>{const n=R(5,40)*20,p=[5,15,20,30][R(0,3)],t=n/10,a=n*p/100;return f(`${p}% of ${n}`,`10% = ${t}. `+(p==5?`Half of it = ${a}`:p==15?`5% = ${t/2}. ${t} + ${t/2} = ${a}`:p==20?`Double = ${a}`:`3 × ${t} = ${a}`),a)}},
+{t:"Difference of squares",lo:8,hi:10,r:"(m − d)(m + d) = m² − d². Pick the middle number m.",g:()=>{const m=[20,30,40,50,60][R(0,4)],d=R(1,5);return f((m-d)+" × "+(m+d),`Middle = ${m}, gap = ${d}. ${m}² − ${d}² = ${m*m} − ${d*d} = ${m*m-d*d}`,m*m-d*d)}},
+{t:"Factorise x² + bx + c quickly",lo:9,hi:10,r:"Find two numbers that multiply to c and add up to b.",g:()=>{const x=R(1,9),y=R(1,9);return f(`x² + ${x+y}x + ${x*y}`,`Product ${x*y}, sum ${x+y} → ${x} and ${y}. So (x + ${x})(x + ${y})`,`(x + ${x})(x + ${y})`)}},
+{t:"Trigonometry table by heart",lo:10,hi:10,r:"sin 0°, 30°, 45°, 60°, 90° = √0, √1, √2, √3, √4, each divided by 2. cos is the same list backwards.",g:()=>{const A=[[0,0],[30,1],[45,2],[60,3],[90,4]][R(0,4)],k=A[1];return f(`sin ${A[0]}°`,`Use √${k} ÷ 2`,k==0?"0":k==1?"1/2":k==4?"1":`√${k}/2`)}}];
+function tricks(){const L=TR.filter(t=>cl>=t.lo&&cl<=t.hi);
+ $("trk").innerHTML=`<h2 style="margin:0">⚡ Easy Tricks · Class ${cl}</h2><p class="note">Pick a class above. Tap 🎬 Watch video to see the trick being taught step by step with the teacher voice.</p>`+L.map(t=>`<div class="card" data-k="${TR.indexOf(t)}"><h3>${t.t}</h3><p>${t.r}</p><div class="ex"></div><div class="stage vid" style="display:none"></div><div class="cap vc"></div><div class="row"><button class="btn" data-a="wa">🎬 Watch video</button><button class="btn alt" data-a="ex">🎯 New example</button><button class="btn alt" data-a="sh">👀 Show steps</button><button class="btn alt" data-a="li">🔊 Teacher</button><button class="btn alt" data-a="ai">🧑‍🏫 Explain more</button></div><div class="out"></div></div>`).join("")+`<button class="btn" id="tc">Close</button>`;
+ $("trk").querySelectorAll("[data-k]").forEach(c=>newTx(c));$("tc").onclick=()=>{RUN++;window.speechSynthesis&&speechSynthesis.cancel();$("trk").style.display="none";$("list").style.display="block"}}
+function newTx(c){RUN++;window.speechSynthesis&&speechSynthesis.cancel();c.querySelector(".vid").style.display="none";c.querySelector(".vc").textContent="";c._e=TR[c.dataset.k].g(cl);c.querySelector(".ex").innerHTML=`<div class="q" style="font-size:24px">${c._e.q}</div>`;c.querySelector(".out").textContent=""}
+$("trk").onclick=e=>{const b=e.target.closest("[data-a]"),c=e.target.closest("[data-k]");if(!b||!c)return;const t=TR[c.dataset.k],x=c._e,o=c.querySelector(".out"),a=b.dataset.a;
+ if(a=="wa")playTrick(c);else if(a=="ex")newTx(c);else if(a=="sh")o.textContent=x.s+"\n✅ Answer: "+x.a;
+ else if(a=="li")speak(`Trick: ${t.t}. ${t.r} Example: ${x.q}. ${x.s}. So the answer is ${x.a}.`.replace(/²/g," squared ").replace(/√/g," square root of ").replace(/%/g," percent "));
+ else ai(SYS()+`\n\nExplain the maths trick "${t.t}" (${t.r}) like a teacher in class, with two fresh examples worked out slowly.`,o,[b])};
+const sp=t=>t.replace(/→/g,". So ").replace(/²/g," squared ").replace(/√/g," square root of ").replace(/%/g," percent ").replace(/…/g," and so on up to ");
+async function playTrick(c){const id=++RUN,y=window.speechSynthesis;y&&y.cancel();const t=TR[c.dataset.k],x=c._e,st=c.querySelector(".vid"),vc=c.querySelector(".vc"),L="en-IN";
+ const ok=()=>{if(id!==RUN)throw 0},cap=async v=>{ok();vc.textContent=v;await say(sp(v),L);ok()},wt=async m=>{await SP(m);ok()};
+ st.style.display="flex";st.className="stage vid board";st.innerHTML=`<div class="big2">🦉 ${x.q}</div>`;
+ const N=(x.q.match(/\d+/g)||[]).map(Number),add=h=>{st.insertAdjacentHTML("beforeend",h);return st.lastChild};
+ try{await cap(`Trick: ${t.t}. ${t.r}`);
+ if(t.t.startsWith("Count on")){const [a,b]=N,nl=add('<div class="nl"></div>');for(let i=0;i<=b;i++)nl.insertAdjacentHTML("beforeend",`<div class="nb">${a+i}</div>`);
+  for(let i=0;i<=b;i++){nl.children[i].classList.add("hl");if(i==0)nl.children[0].textContent="🐸"+a;await wt(800)}}
+ else if(t.t.startsWith("Make 10")){const [a,b]=N,k=10-a,F=add('<div class="tf"></div>'),R2=add('<div class="grp"></div>');for(let i=0;i<10;i++)F.insertAdjacentHTML("beforeend","<i></i>");
+  for(let i=0;i<a;i++){F.children[i].textContent="🔵";await wt(200)}for(let i=0;i<b;i++)R2.appendChild(it("🟠"));await cap(`We need ${k} more to make 10. Take ${k} from the orange ones.`);
+  for(let i=0;i<k;i++){R2.firstChild.remove();F.children[a+i].textContent="🟠";await wt(450)}}
+ else if(t.t.startsWith("Table of 9")){const n=N[1],H=add('<div class="hands"></div>');for(let i=0;i<10;i++)H.insertAdjacentHTML("beforeend",'<span class="fg"></span>');
+  await cap(`Fold down finger number ${n}.`);H.children[n-1].classList.add("fold");await wt(900);await cap(`${n-1} fingers are on the left, and ${10-n} on the right.`)}
+ for(const ln of x.s.split(/(?<=\.)\s+|\n/).filter(Boolean)){add(`<div class="stp">${ln.replace(/(\d+)/g,'<span class="num">$1</span>')}</div>`);await cap(ln)}
+ add(`<div class="ans">✅ ${x.a} 🎉</div>`);await cap(`So the answer is ${x.a}. Shabash!`)}catch(e){if(e!==0)throw e}}
+$("tk").onclick=()=>{window.speechSynthesis&&speechSynthesis.cancel();$("list").style.display="none";$("view").style.display="none";$("rep").style.display="none";$("trk").style.display="block";tricks()};
+$("rp").onclick=()=>{$("trk").style.display="none";window.speechSynthesis&&speechSynthesis.cancel();$("list").style.display="none";$("view").style.display="none";$("rep").style.display="block";report()};
+$("st").textContent=stars;lvl();
+drawCls();
+</script></body></html>
