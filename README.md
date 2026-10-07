@@ -43,3 +43,10 @@ Set these variables (no Anthropic key needed):
     API_KEY=<only for hosted services>
 
 Run Ollama (`ollama serve`, then `ollama pull <model>`) on a cloud VM with a GPU for good speed. Open models (Llama, Qwen, Gemma, Mistral families) vary in maths accuracy and Hindi/Kannada/Telugu/Tamil quality, so test every class and language before children use it.
+
+## Voice in all languages
+The app speaks 12 languages: English, Hindi, Kannada, Telugu, Tamil, Marathi, Bengali, Gujarati, Malayalam, Punjabi, Odia and Urdu.
+
+1. **Free (default):** uses the voices already on the child's phone or computer. Some phones lack some languages. The app shows a warning with the fix (Settings > Text-to-speech > Install voice data).
+2. **Cloud voice (recommended for schools):** set `GOOGLE_TTS_KEY` (create it in Google Cloud: enable the "Cloud Text-to-Speech API", then create an API key and restrict it to that API). The app then uses the same clear voice on every device. Check Google's pricing and set a budget alert. If a language is not supported by the service, the app falls back to the phone voice.
+3. Animations and tricks are narrated in the chosen language: the app translates each spoken line with your AI model (a few seconds on the first play, then it is remembered).

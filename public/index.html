@@ -62,6 +62,8 @@ button,select,input{font:inherit;color:inherit}
 .nb,.tf i{min-width:36px;height:36px;border:2px solid var(--line);border-radius:8px;display:grid;place-items:center;font-weight:800;font-style:normal;transition:all .4s}.nb.hl{background:var(--acc);color:#4a3300;transform:scale(1.25)}
 .fg{width:20px;height:76px;background:#f6c8a0;border-radius:10px;transition:all .6s;align-self:flex-end}.fg.fold{height:26px;background:#9aa0b8}
 .vc{font-size:19px;min-height:0}
+.fig{display:flex;justify-content:center;align-items:center;min-height:140px;flex-wrap:wrap;gap:8px}.bd{display:flex;flex-direction:column;gap:6px}
+.bars{display:flex;gap:10px;align-items:flex-end;height:150px}.bars i{width:36px;background:var(--pri);border-radius:6px 6px 0 0;color:#fff;font-style:normal;text-align:center;font-weight:800;animation:pop .5s}
 .foot{text-align:center;margin-top:18px}
 table td,table th{padding:6px;border-bottom:1px solid var(--line);text-align:center}table td:first-child{text-align:left}
 </style></head><body><div class="w">
@@ -69,7 +71,8 @@ table td,table th{padding:6px;border-bottom:1px solid var(--line);text-align:cen
 <div class="stat"><span class="stars">⭐ <span id="st">0</span></span><div class="lvw"><span id="lv">Level 1</span> · collect 10 ⭐ to level up<div class="bw"><div id="bar"></div></div></div></div></div>
 <h3 style="margin:14px 2px 0">Choose your class</h3>
 <div class="row" id="cls"></div>
-<div class="row"><label class="note">🌐 Language:&nbsp;<select id="lang"><option>English</option><option>Hindi</option><option>Kannada</option><option>Telugu</option><option>Tamil</option></select></label> <label class="note"><input type="checkbox" id="auto" checked> 🔊 Read answers aloud</label> <button class="pill" id="tk">⚡ Easy Tricks</button> <button class="pill" id="rp">👪 Parent report</button> <button class="pill" id="stop">⏹ Stop voice</button></div>
+<div class="row"><label class="note">🌐 Language:&nbsp;<select id="lang"><option value="English">English</option><option value="Hindi">हिन्दी</option><option value="Kannada">ಕನ್ನಡ</option><option value="Telugu">తెలుగు</option><option value="Tamil">தமிழ்</option><option value="Marathi">मराठी</option><option value="Bengali">বাংলা</option><option value="Gujarati">ગુજરાતી</option><option value="Malayalam">മലയാളം</option><option value="Punjabi">ਪੰਜਾਬੀ</option><option value="Odia">ଓଡ଼ିଆ</option><option value="Urdu">اردو</option></select></label> <label class="note"><input type="checkbox" id="auto" checked> 🔊 Read answers aloud</label> <button class="pill" id="tk">⚡ Easy Tricks</button> <button class="pill" id="rp">👪 Parent report</button> <button class="pill" id="stop">⏹ Stop voice</button></div>
+<div class="note" id="tn"></div><div class="note" id="vn" style="margin:4px 2px"></div>
 <div id="list"></div>
 <div id="rep" class="card" style="display:none"></div>
 <div id="trk" class="card" style="display:none"></div>
@@ -128,24 +131,35 @@ const icon=n=>(IC.find(x=>x[0].test(n))||[0,"📘"])[1];
 function drawCls(){$("cls").innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="pill ${n==cl?'on':''}" data-c="${n}">Class ${n}</button>`).join("");
  $("list").innerHTML=`<div class="card"><h3>📚 Class ${cl} chapters</h3><div class="grid">`+C[cl].map((c,i)=>`<button class="ch" data-i="${i}" style="--h:${(i*47+cl*30)%360}"><span class="ic">${icon(c[0])}</span><span class="nm">${c[0]}</span><span class="no">${i+1}</span></button>`).join("")+"</div></div>"}
 $("cls").onclick=e=>{const n=e.target.dataset.c;if(n){cl=+n;RUN++;drawCls();$("rep").style.display="none";if($("trk").style.display=="block")tricks();else{$("view").style.display="none";$("list").style.display="block"}}};
-$("list").onclick=e=>{const t=e.target.closest("[data-i]");if(!t)return;const i=t.dataset.i;ci=+i;ch=C[cl][i];ex=null;document.querySelector("[data-t=watch]").style.display=cl>=6?"none":"";$("list").style.display="none";$("view").style.display="block";
+$("list").onclick=e=>{const t=e.target.closest("[data-i]");if(!t)return;const i=t.dataset.i;ci=+i;ch=C[cl][i];ex=null;document.querySelector("[data-t=watch]").style.display="";$("list").style.display="none";$("view").style.display="block";
  $("ct").textContent=`${icon(ch[0])} Class ${cl} · ${ch[0]}`;$("lo").textContent="";$("no").textContent="";$("easy").style.display="none";$("chat").innerHTML="";hist=[];tab("learn");}
-$("back").onclick=()=>{RUN++;ex=null;window.speechSynthesis&&speechSynthesis.cancel();$("lis").style.display="none";$("view").style.display="none";$("list").style.display="block"};
-function tab(t){RUN++;window.speechSynthesis&&speechSynthesis.cancel();if(t=="watch"){$("stg").innerHTML='<span class="note">Press ▶ Play to watch the lesson 🎬</span>';$("cap").textContent=""}
+$("back").onclick=()=>{RUN++;ex=null;stopAll();$("lis").style.display="none";$("view").style.display="none";$("list").style.display="block"};
+function tab(t){RUN++;stopAll();if(t=="watch"){$("stg").innerHTML='<span class="note">Press ▶ Play to watch the lesson 🎬</span>';$("cap").textContent=""}
  ["learn","watch","notes","prac","ask"].forEach(x=>$(x).style.display=x==t?"block":"none");
  document.querySelectorAll("[data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t==t));if(t=="prac")prac();if(t=="notes"&&!$("no").textContent)$("no").textContent=NT[cl+"-"+ci]||"Tap “Make my notes” to get neat study notes for this chapter 📝"}
 document.querySelector("#view .row").onclick=e=>{if(e.target.dataset.t)tab(e.target.dataset.t)};
 const SYS=()=>`You are Ganit Mitra, a loving, patient classroom maths teacher talking ALOUD to a CBSE (NCERT) Class ${cl} child in India. Reply in ${$("lang").value}. Speak like a real teacher in class, not like a textbook: warm spoken style ("Okay children, listen carefully..."), short sentences, small questions with a pause ("Can you guess?"), and always a real-life story or example (chocolates, cricket, rupees, mangoes) worked through slowly step by step. Say signs in words (plus, minus, times, divided by, half) and never use bullet points, markdown, tables or symbols. When a child asks a problem, give a hint first, then guide. Keep it about 120 words unless teaching a full lesson. Only maths; stay kind and child-safe.`;
+let smp=null;let VT=0,CUR=null,CLOUD=false;
+function stopAll(){VT++;CUR&&CUR.pause();window.speechSynthesis&&speechSynthesis.cancel()}
+function bsay(t,L){const y=window.speechSynthesis;if(!y)return;const u=new SpeechSynthesisUtterance(t);u.lang=L;u.rate=.85;y.speak(u)}
+async function cloudSay(t,L){const my=++VT,P=t.split(/(?<=[.!?।])\s+/).filter(x=>x.trim().length>1);
+ for(let i=0;i<P.length;i++){if(my!==VT)return;try{const r=await fetch("/api/tts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:P[i].slice(0,380),lang:L})});
+  if(!r.ok){bsay(P.slice(i).join(" "),L);return}const j=await r.json();if(my!==VT)return;const a=CUR=new Audio("data:audio/mp3;base64,"+j.audio);
+  await new Promise(res=>{a.onended=res;a.onerror=res;a.play().catch(res)})}catch(e){bsay(P.slice(i).join(" "),L);return}}}
+const TC={},needTx=n=>{const l=$("lang").value;return l!="English"&&!(n&&l=="Hindi")};
+function tx(t){const l=$("lang").value,k=l+"|"+t;return TC[k]||(TC[k]=(async()=>{const s=await S();if(!s)return t;try{const r=await s(`Translate this maths teaching sentence into ${l} for a school child. Keep the numbers, but write maths signs (plus, minus, times, divided by, equals) as words in ${l}. Output only the translation:\n${t}`,{});return(r.text||t).trim()}catch(e){delete TC[k];return t}})())}
+function chk(){const l=$("lang").value,c=LC[l].slice(0,2),y=window.speechSynthesis,has=y&&y.getVoices().some(v=>v.lang.replace("_","-").slice(0,2)==c);
+ $("vn").textContent=CLOUD?"☁️ HD cloud voice is on for "+l:(has||!y||!y.getVoices().length)?"":`⚠️ This phone has no ${l} voice. Install it in Settings → Text-to-speech → Install voice data (or ask the school to turn on the cloud voice).`}
 async function S(){return async(turns,o)=>{const m=typeof turns=="string"?[{role:"user",content:turns}]:turns;
  const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:m})});
  if(!r.ok)throw{code:r.status==429?"rate_limited":"error"};const j=await r.json();o&&o.onText&&o.onText({text:j.text});return{text:j.text}}}
-const LC={English:"en-IN",Hindi:"hi-IN",Kannada:"kn-IN",Telugu:"te-IN",Tamil:"ta-IN"};
+const LC={English:"en-IN",Hindi:"hi-IN",Kannada:"kn-IN",Telugu:"te-IN",Tamil:"ta-IN",Marathi:"mr-IN",Bengali:"bn-IN",Gujarati:"gu-IN",Malayalam:"ml-IN",Punjabi:"pa-IN",Odia:"or-IN",Urdu:"ur-IN"};
 function clean(t){return t.replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu,"").replace(/[*#_`>|~]/g,"").replace(/^\s*[-•]\s*/gm,"")
  .replace(/(\d)\s*\/\s*(\d)/g,"$1 by $2").replace(/\s*×\s*/g," times ").replace(/(\d)\s*[x*]\s*(?=\d)/g,"$1 times ").replace(/\s*÷\s*/g," divided by ").replace(/\s*[+]\s*/g," plus ").replace(/\s*[−–]\s*(?=\d)/g," minus ").replace(/\s*=\s*/g," equals ").replace(/\n+/g,". ")}
-function speak(t){const y=window.speechSynthesis;if(!y||!t)return;y.cancel();const L=LC[$("lang").value],V=y.getVoices().filter(x=>x.lang.replace("_","-").slice(0,2)==L.slice(0,2));
+function speak(t){if(CLOUD&&t){stopAll();cloudSay(clean(t),LC[$("lang").value]);return}const y=window.speechSynthesis;if(!y||!t)return;y.cancel();const L=LC[$("lang").value],V=y.getVoices().filter(x=>x.lang.replace("_","-").slice(0,2)==L.slice(0,2));
  const v=V.find(x=>/natural|neural|online|google|female|heera|veena|zira/i.test(x.name)&&x.lang.replace("_","-")==L)||V.find(x=>x.lang.replace("_","-")==L)||V[0];
  clean(t).split(/(?<=[.!?।])\s+/).filter(x=>x.trim().length>1).forEach(x=>{const u=new SpeechSynthesisUtterance(x);u.lang=L;u.rate=.85;u.pitch=1.1;if(v)u.voice=v;y.speak(u)})}
-$("stop").onclick=()=>window.speechSynthesis&&speechSynthesis.cancel();
+$("stop").onclick=()=>stopAll();
 $("lis").onclick=()=>speak($("lo").textContent);
 $("mic").onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){$("ti").placeholder="Voice input isn't supported here – please type.";return}
  const r=new R();r.lang=LC[$("lang").value];r.onresult=e=>{$("ti").value=e.results[0][0].transcript;send()};$("mic").textContent="👂";r.onend=()=>$("mic").textContent="🎤";try{r.start()}catch(e){}};
@@ -182,14 +196,14 @@ function report(){let rows="",T=0,Cn=0;const weak=[];
  $("rs").onclick=()=>{if(confirm("Erase all progress?")){ST={};stars=0;setStars(0);report()}};
  $("sm").onclick=()=>ai(`You are writing for a parent of a CBSE primary-school child in India. In ${$("lang").value}, in 4 short friendly sentences, summarise this maths practice record, name strengths and weak chapters, and suggest one simple home activity. Data: stars ${stars}, tried ${T}, correct ${Cn}, weak chapters: ${weak.join(", ")||"none yet"}. Per chapter [correct,tried]: ${JSON.stringify(ST)}`,$("so"),[$("sm")])}
 let NT={};try{NT=JSON.parse(localStorage.getItem("gmn")||"{}")}catch(e){}
-$("mk").onclick=async()=>{const k=cl+"-"+ci,t=await ai(`You are a CBSE (NCERT) maths teacher making neat revision notes for a Class ${cl} child in India, in ${$("lang").value}. Chapter: "${ch[0]}". Use plain text only (no markdown symbols, no tables), simple words, and exactly these parts, each heading on its own line:\nWhat we learn: 1 or 2 lines.\nKey points: 4 to 5 lines, each starting with •.\nRemember: one easy rule or trick.\nSolved example 1: with steps, using words for signs.\nSolved example 2: with steps.\nTry yourself: 2 short questions without answers.\nNew words: 2 or 3 maths words with meanings.\nKeep it under 220 words.`,$("no"),[$("mk")],true);
+$("mk").onclick=async()=>{const k=cl+"-"+ci,t=await ai(`You are a CBSE (NCERT) maths teacher making neat revision notes for a Class ${cl} child in India, in ${$("lang").value}. Chapter: "${ch[0]}". Use plain text only (no markdown symbols, no tables), simple words, and exactly these parts, each heading on its own line, with the headings also written in ${$("lang").value}:\nWhat we learn: 1 or 2 lines.\nKey points: 4 to 5 lines, each starting with •.\nRemember: one easy rule or trick.\nSolved example 1: with steps, using words for signs.\nSolved example 2: with steps.\nTry yourself: 2 short questions without answers.\nNew words: 2 or 3 maths words with meanings.\nKeep it under 220 words.`,$("no"),[$("mk")],true);
  if(t){NT[k]=t;try{localStorage.setItem("gmn",JSON.stringify(NT))}catch(e){}}};
 $("nl").onclick=()=>speak($("no").textContent);
 $("cp").onclick=async()=>{try{await navigator.clipboard.writeText($("no").textContent);$("cp").textContent="✅ Copied"}catch(e){$("cp").textContent="Select & copy"}setTimeout(()=>$("cp").textContent="📋 Copy",1500)};
-const SP=ms=>new Promise(r=>setTimeout(r,ms));let RUN=0,ex=null;
+const SP=ms=>new Promise(r=>setTimeout(r,ms));let RUN=0,ex=null,FRESH=0;const VC={};
 const OB=[["🍎","apples","सेब"],["🥭","mangoes","आम"],["🍫","chocolates","चॉकलेट"],["⚽","balls","गेंदें"]];
 const SH=[["🔴","circle","गोल","round like a ball"],["🟦","square","वर्ग","same on all four sides"],["🔺","triangle","त्रिभुज","with three corners"],["⭐","star","तारा","bright in the sky"]];
-function say(t,L){return new Promise(r=>{const y=window.speechSynthesis,ms=t.length*85+1400;if(!y||!$("auto").checked){setTimeout(r,ms);return}
+function say(t,L){return new Promise(r=>{const y=window.speechSynthesis,ms=t.length*85+1400;if($("auto").checked&&CLOUD){cloudSay(clean(t),L).then(r);return}if(!y||!$("auto").checked){setTimeout(r,ms);return}
  const u=new SpeechSynthesisUtterance(clean(t));u.lang=L;u.rate=.85;u.pitch=1.1;const v=y.getVoices().find(x=>x.lang.replace("_","-")==L);if(v)u.voice=v;let d=0;const f=()=>{d||(d=1,r())};u.onend=f;setTimeout(f,ms+4000);y.speak(u)})}
 function mk(e,n){const d=document.createElement("div");d.className="grp";for(let i=0;i<n;i++)d.appendChild(it(e));return d}
 function it(e){const s=document.createElement("span");s.className="it";s.textContent=e;return s}
@@ -198,9 +212,27 @@ function newEx(){const K=ch[1],o=OB[R(0,3)];
  if(K==3)return{o,a:R(2,5),b:R(2,6)};if(K==4){const b=R(2,5),q=R(2,6);return{o,b,q,n:b*q}}
  if(K==5){const b=[2,3,4,5,8][R(0,4)];return{o,a:R(1,b-1),b}}
  if(K==6)return{o,h:R(2,4),w:R(2,3)};return{o,n:R(5,10)}}
-async function play(){const id=++RUN,y=window.speechSynthesis;y&&y.cancel();if(!ex)ex=newEx();const st=$("stg");st.innerHTML="";
- const hi=$("lang").value=="Hindi",L=hi?"hi-IN":"en-IN",T=(e,h)=>hi?h:e,K=ch[1],{o,a,b,q,n,h,w}=ex,nm=hi?o[2]:o[1],em=o[0],ok=()=>{if(id!==RUN)throw 0};
- const cap=async t=>{ok();$("cap").textContent=t;await say(t,L);ok()},wt=async m=>{await SP(m);ok()},add=e=>(st.appendChild(e),e);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function draw(f){f=f||{};const n=v=>Math.max(0,Math.min(+v||0,99));
+ if(f.t=="emoji"){return`<div class="grp">`+Array.from({length:Math.max(1,Math.min(+f.n||1,12))},()=>`<span class="it">${esc(String(f.e||"⭐").slice(0,8))}</span>`).join("")+"</div>"}
+ if(f.t=="line"){let a=Math.round(+f.a||0),b=Math.round(+f.b||10);if(b<=a)b=a+10;if(b-a>20)b=a+20;const m=Math.round(+f.m);let h='<div class="nl">';for(let i=a;i<=b;i++)h+=`<div class="nb${i==m?" hl":""}">${i}</div>`;return h+"</div>"}
+ if(f.t=="shape"){const S={circle:'<circle cx="50" cy="50" r="40"/>',square:'<rect x="15" y="15" width="70" height="70"/>',triangle:'<polygon points="50,12 90,85 10,85"/>',rectangle:'<rect x="8" y="28" width="84" height="44"/>'},k=S[f.s]?f.s:"circle";return`<div style="text-align:center"><svg viewBox="0 0 100 100" fill="#a5b4fc" stroke="#4f46e5" stroke-width="3">${S[k]}</svg><b>${k}</b></div>`}
+ if(f.t=="bars"&&Array.isArray(f.v)){const v=f.v.slice(0,8).map(n),mx=Math.max(...v,1);return'<div class="bars">'+v.map(x=>`<i style="height:${Math.max(18,x/mx*130)}px">${x}</i>`).join("")+"</div>"}
+ return'<span class="big">🦉</span>'}
+function parseSc(t){try{t=t.replace(/```json|```/g,"");const a=JSON.parse(t.slice(t.indexOf("["),t.lastIndexOf("]")+1));const r=a.filter(x=>x&&typeof x.say=="string").slice(0,8);return r.length>=3?r:null}catch(e){return null}}
+async function aiVideo(id){const st=$("stg"),L=LC[$("lang").value],lg=$("lang").value,key=cl+"-"+ci+"-"+lg,ok=()=>{if(id!==RUN)throw 0};
+ st.className="stage board";st.innerHTML='<span class="note">🦉 Preparing your video…</span>';$("cap").textContent="";
+ try{let sc=!FRESH&&VC[key];FRESH=0;
+  if(!sc){const s=await S();if(!s){st.textContent="AI is not available.";return}
+   const r=await s(`You are a kind CBSE maths teacher writing a short animated video script for a Class ${cl} child, chapter "${ch[0]}", in ${lg}. Return ONLY a JSON array of 6 scenes and nothing else. Each scene: {"say":"1 or 2 short spoken sentences in ${lg}, teacher style, signs said in words","board":"one short line of maths written with symbols, or empty string","fig":{...}}. fig is exactly one of: {"t":"emoji","e":"🍎","n":5} (n up to 12), {"t":"line","a":0,"b":10,"m":6} (number line from a to b, marking m), {"t":"shape","s":"circle"} (circle, square, triangle or rectangle), {"t":"bars","v":[3,5,2,6]}, or {"t":"none"}. Scene 1 greets the children and starts with a real-life story, scenes 2 to 5 explain step by step with one worked example using real numbers, scene 6 gives one small try-it question with encouragement. Make sure every number and calculation is correct.`,{cache:false});ok();
+   sc=parseSc(r.text);if(!sc){st.textContent="Sorry, the video could not be made. Tap New example to try again.";return}VC[key]=sc}
+  st.innerHTML='<div class="fig"></div><div class="bd"></div>';const fg=st.children[0],bd=st.children[1];
+  for(const x of sc){ok();fg.innerHTML=draw(x.fig);if(x.board&&String(x.board).trim())bd.insertAdjacentHTML("beforeend",`<div class="stp">${esc(String(x.board).slice(0,80))}</div>`);$("cap").textContent=x.say;await say(x.say,L);ok()}
+  $("cap").textContent="🎉 Shabash! Tap ▶ Play to watch again, or 🔁 New example for a fresh story."}
+ catch(e){if(e!==0)st.textContent="Oops, please try again."}}
+async function play(){const id=++RUN;stopAll();if(!(ch[1]>=1&&ch[1]<=6&&cl<6))return aiVideo(id);if(!ex)ex=newEx();const st=$("stg");st.innerHTML="";
+ const hi=$("lang").value=="Hindi",L=LC[$("lang").value],T=(e,h)=>hi?h:e,K=ch[1],{o,a,b,q,n,h,w}=ex,nm=hi?o[2]:o[1],em=o[0],ok=()=>{if(id!==RUN)throw 0};
+ const cap=async t=>{ok();if(needTx(1))t=await tx(t);ok();$("cap").textContent=t;await say(t,L);ok()},wt=async m=>{await SP(m);ok()},add=e=>(st.appendChild(e),e);
  try{
  if(K==1){const A=add(mk(em,a));await cap(T(`We have ${a} ${nm}.`,`हमारे पास ${a} ${nm} हैं।`));const B=add(mk(em,b));await cap(T(`Now ${b} more ${nm} come.`,`अब ${b} और ${nm} आए।`));
   while(B.firstChild){A.appendChild(B.firstChild);await wt(250)}B.remove();await cap(T("Let us count them together.","चलो साथ में गिनते हैं।"));
@@ -233,7 +265,7 @@ async function play(){const id=++RUN,y=window.speechSynthesis;y&&y.cancel();if(!
  else{const A=add(mk(em,0));await cap(T(`Let us count ${nm} together.`,`चलो ${nm} साथ में गिनते हैं।`));for(let i=1;i<=n;i++){A.appendChild(it(em));$("cap").textContent=i;await wt(450)}
   await cap(T(`There are ${n} ${nm} in all. Shabash!`,`कुल ${n} ${nm} हैं। शाबाश!`))}
  }catch(e){if(e!==0)throw e}}
-$("pl").onclick=play;$("nw").onclick=()=>{ex=null;play()};
+$("pl").onclick=play;$("nw").onclick=()=>{ex=null;FRESH=1;play()};
 const f=(q,s,a)=>({q,s,a});
 const TR=[
 {t:"Count on from the bigger number",lo:1,hi:2,r:"Keep the bigger number in your head and count on the smaller one using your fingers.",g:()=>{const a=R(6,9),b=R(2,4);return f(a+" + "+b,`Start at ${a}. Count on ${b}: ${Array.from({length:b},(_,i)=>a+i+1).join(", ")}`,a+b)}},
@@ -254,17 +286,18 @@ const TR=[
 {t:"Trigonometry table by heart",lo:10,hi:10,r:"sin 0°, 30°, 45°, 60°, 90° = √0, √1, √2, √3, √4, each divided by 2. cos is the same list backwards.",g:()=>{const A=[[0,0],[30,1],[45,2],[60,3],[90,4]][R(0,4)],k=A[1];return f(`sin ${A[0]}°`,`Use √${k} ÷ 2`,k==0?"0":k==1?"1/2":k==4?"1":`√${k}/2`)}}];
 function tricks(){const L=TR.filter(t=>cl>=t.lo&&cl<=t.hi);
  $("trk").innerHTML=`<h2 style="margin:0">⚡ Easy Tricks · Class ${cl}</h2><p class="note">Pick a class above. Tap 🎬 Watch video to see the trick being taught step by step with the teacher voice.</p>`+L.map(t=>`<div class="card" data-k="${TR.indexOf(t)}"><h3>${t.t}</h3><p>${t.r}</p><div class="ex"></div><div class="stage vid" style="display:none"></div><div class="cap vc"></div><div class="row"><button class="btn" data-a="wa">🎬 Watch video</button><button class="btn alt" data-a="ex">🎯 New example</button><button class="btn alt" data-a="sh">👀 Show steps</button><button class="btn alt" data-a="li">🔊 Teacher</button><button class="btn alt" data-a="ai">🧑‍🏫 Explain more</button></div><div class="out"></div></div>`).join("")+`<button class="btn" id="tc">Close</button>`;
- $("trk").querySelectorAll("[data-k]").forEach(c=>newTx(c));$("tc").onclick=()=>{RUN++;window.speechSynthesis&&speechSynthesis.cancel();$("trk").style.display="none";$("list").style.display="block"}}
-function newTx(c){RUN++;window.speechSynthesis&&speechSynthesis.cancel();c.querySelector(".vid").style.display="none";c.querySelector(".vc").textContent="";c._e=TR[c.dataset.k].g(cl);c.querySelector(".ex").innerHTML=`<div class="q" style="font-size:24px">${c._e.q}</div>`;c.querySelector(".out").textContent=""}
+ $("trk").querySelectorAll("[data-k]").forEach(c=>newTx(c));$("tc").onclick=()=>{RUN++;stopAll();$("trk").style.display="none";$("list").style.display="block"}}
+function newTx(c){RUN++;stopAll();c.querySelector(".vid").style.display="none";c.querySelector(".vc").textContent="";c._e=TR[c.dataset.k].g(cl);c.querySelector(".ex").innerHTML=`<div class="q" style="font-size:24px">${c._e.q}</div>`;c.querySelector(".out").textContent=""}
 $("trk").onclick=e=>{const b=e.target.closest("[data-a]"),c=e.target.closest("[data-k]");if(!b||!c)return;const t=TR[c.dataset.k],x=c._e,o=c.querySelector(".out"),a=b.dataset.a;
- if(a=="wa")playTrick(c);else if(a=="ex")newTx(c);else if(a=="sh")o.textContent=x.s+"\n✅ Answer: "+x.a;
- else if(a=="li")speak(`Trick: ${t.t}. ${t.r} Example: ${x.q}. ${x.s}. So the answer is ${x.a}.`.replace(/²/g," squared ").replace(/√/g," square root of ").replace(/%/g," percent "));
+ if(a=="wa")playTrick(c);else if(a=="ex")newTx(c);else if(a=="sh"){const v=x.s+"\n✅ Answer: "+x.a;o.textContent=v;if(needTx(0))tx(v).then(r=>{o.textContent=r})}
+ else if(a=="li"){(async()=>{let v=`Trick: ${t.t}. ${t.r} Example: ${x.q}. ${x.s}. So the answer is ${x.a}.`;if(needTx(0))v=await tx(v);speak(v.replace(/²/g," squared ").replace(/√/g," square root of ").replace(/%/g," percent "))})()}
  else ai(SYS()+`\n\nExplain the maths trick "${t.t}" (${t.r}) like a teacher in class, with two fresh examples worked out slowly.`,o,[b])};
 const sp=t=>t.replace(/→/g,". So ").replace(/²/g," squared ").replace(/√/g," square root of ").replace(/%/g," percent ").replace(/…/g," and so on up to ");
-async function playTrick(c){const id=++RUN,y=window.speechSynthesis;y&&y.cancel();const t=TR[c.dataset.k],x=c._e,st=c.querySelector(".vid"),vc=c.querySelector(".vc"),L="en-IN";
- const ok=()=>{if(id!==RUN)throw 0},cap=async v=>{ok();vc.textContent=v;await say(sp(v),L);ok()},wt=async m=>{await SP(m);ok()};
+async function playTrick(c){const id=++RUN;stopAll();const t=TR[c.dataset.k],x=c._e,st=c.querySelector(".vid"),vc=c.querySelector(".vc"),L=LC[$("lang").value];
+ const ok=()=>{if(id!==RUN)throw 0},cap=async v=>{ok();if(needTx(0))v=await tx(v);ok();vc.textContent=v;await say(sp(v),L);ok()},wt=async m=>{await SP(m);ok()};
  st.style.display="flex";st.className="stage vid board";st.innerHTML=`<div class="big2">🦉 ${x.q}</div>`;
  const N=(x.q.match(/\d+/g)||[]).map(Number),add=h=>{st.insertAdjacentHTML("beforeend",h);return st.lastChild};
+ const LN=x.s.split(/(?<=\.)\s+|\n/).filter(Boolean);if(needTx(0))[`Trick: ${t.t}. ${t.r}`,...LN,`So the answer is ${x.a}. Shabash!`].forEach(l=>tx(l));
  try{await cap(`Trick: ${t.t}. ${t.r}`);
  if(t.t.startsWith("Count on")){const [a,b]=N,nl=add('<div class="nl"></div>');for(let i=0;i<=b;i++)nl.insertAdjacentHTML("beforeend",`<div class="nb">${a+i}</div>`);
   for(let i=0;i<=b;i++){nl.children[i].classList.add("hl");if(i==0)nl.children[0].textContent="🐸"+a;await wt(800)}}
@@ -273,10 +306,25 @@ async function playTrick(c){const id=++RUN,y=window.speechSynthesis;y&&y.cancel(
   for(let i=0;i<k;i++){R2.firstChild.remove();F.children[a+i].textContent="🟠";await wt(450)}}
  else if(t.t.startsWith("Table of 9")){const n=N[1],H=add('<div class="hands"></div>');for(let i=0;i<10;i++)H.insertAdjacentHTML("beforeend",'<span class="fg"></span>');
   await cap(`Fold down finger number ${n}.`);H.children[n-1].classList.add("fold");await wt(900);await cap(`${n-1} fingers are on the left, and ${10-n} on the right.`)}
- for(const ln of x.s.split(/(?<=\.)\s+|\n/).filter(Boolean)){add(`<div class="stp">${ln.replace(/(\d+)/g,'<span class="num">$1</span>')}</div>`);await cap(ln)}
+ for(const ln of LN){add(`<div class="stp">${ln.replace(/(\d+)/g,'<span class="num">$1</span>')}</div>`);await cap(ln)}
  add(`<div class="ans">✅ ${x.a} 🎉</div>`);await cap(`So the answer is ${x.a}. Shabash!`)}catch(e){if(e!==0)throw e}}
-$("tk").onclick=()=>{window.speechSynthesis&&speechSynthesis.cancel();$("list").style.display="none";$("view").style.display="none";$("rep").style.display="none";$("trk").style.display="block";tricks()};
-$("rp").onclick=()=>{$("trk").style.display="none";window.speechSynthesis&&speechSynthesis.cancel();$("list").style.display="none";$("view").style.display="none";$("rep").style.display="block";report()};
+$("tk").onclick=()=>{stopAll();$("list").style.display="none";$("view").style.display="none";$("rep").style.display="none";$("trk").style.display="block";tricks()};
+$("rp").onclick=()=>{$("trk").style.display="none";stopAll();$("list").style.display="none";$("view").style.display="none";$("rep").style.display="block";report()};
+let UI={},UT=0,UB=0;try{UI=JSON.parse(localStorage.getItem("gmu")||"{}")}catch(e){}
+const SKIPS=".out,#cap,#tn,#vn,.msg,.stage,.q,.opt,.vc,.nb,.num,#bar,script,style,select,input,textarea";
+async function ui(){if(UB){UB=2;return}UB=1;const l=$("lang").value,miss=new Set();document.documentElement.dir=l=="Urdu"?"rtl":"ltr";
+ const w=document.createTreeWalker(document.querySelector(".w"),NodeFilter.SHOW_TEXT);let n;const L=[];while(n=w.nextNode())L.push(n);
+ for(n of L){const p=n.parentElement;if(!p||p.closest(SKIPS))continue;let o;if(n._d!==undefined&&n._d===n.data)o=n._o;else{o=n.data;n._o=o}
+  const c=o.trim();if(c.length<2||!/\p{L}/u.test(c))continue;
+  if(l=="English"){if(n.data!==o)n.data=o;n._d=undefined;continue}
+  const t=(UI[l]||{})[c];if(t){const v=o.replace(c,()=>t);if(n.data!==v)n.data=v;n._d=n.data}else miss.add(c)}
+ if(miss.size){$("tn").textContent="🌐 Translating…";const a=[...miss],B=[];for(let i=0;i<a.length;i+=40)B.push(a.slice(i,i+40));const sm=await S();
+  if(sm)await Promise.all(B.map(async b=>{try{const r=await sm(`Translate these short texts from a school maths app into ${l}. Keep emojis, numbers and maths symbols. Return ONLY a JSON array of exactly ${b.length} strings in the same order.\n`+JSON.stringify(b),{});const t=r.text,x=JSON.parse(t.slice(t.indexOf("["),t.lastIndexOf("]")+1));
+   if(x.length==b.length){UI[l]=UI[l]||{};b.forEach((k,j)=>{if(typeof x[j]=="string")UI[l][k]=x[j]})}}catch(e){}}));
+  try{localStorage.setItem("gmu",JSON.stringify(UI))}catch(e){}$("tn").textContent="";UB=2}
+ const again=UB==2;UB=0;if(again)setTimeout(ui,300)}
 $("st").textContent=stars;lvl();
-drawCls();
+$("lang").onchange=()=>{stopAll();try{localStorage.setItem("gml",$("lang").value)}catch(e){}chk();ui()};try{const v=localStorage.getItem("gml");if(v&&LC[v])$("lang").value=v}catch(e){};window.speechSynthesis&&(speechSynthesis.onvoiceschanged=chk);
+fetch("/api/tts").then(r=>r.json()).then(j=>{CLOUD=!!j.on;chk()}).catch(()=>{});chk();
+drawCls();new MutationObserver(()=>{clearTimeout(UT);UT=setTimeout(ui,250)}).observe(document.querySelector(".w"),{childList:true,subtree:true,characterData:true});ui();
 </script></body></html>

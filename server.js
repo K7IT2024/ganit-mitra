@@ -2,12 +2,18 @@
 const express = require("express");
 const path = require("path");
 const { handle } = require("./lib/tutor");
+const { handleTts, status } = require("./lib/tts");
 const app = express();
 app.set("trust proxy", true);
 app.use(express.json({ limit: "50kb" }));
 app.use(express.static(path.join(__dirname, "public")));
 app.post("/api/chat", async (req, res) => {
   const r = await handle(req.body, req.ip);
+  res.status(r.status).json(r.body);
+});
+app.get("/api/tts", (_, res) => res.json(status()));
+app.post("/api/tts", async (req, res) => {
+  const r = await handleTts(req.body, req.ip);
   res.status(r.status).json(r.body);
 });
 app.get("/health", (_, res) => res.send("ok"));
