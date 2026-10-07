@@ -50,3 +50,16 @@ The app speaks 12 languages: English, Hindi, Kannada, Telugu, Tamil, Marathi, Be
 1. **Free (default):** uses the voices already on the child's phone or computer. Some phones lack some languages. The app shows a warning with the fix (Settings > Text-to-speech > Install voice data).
 2. **Cloud voice (recommended for schools):** set `GOOGLE_TTS_KEY` (create it in Google Cloud: enable the "Cloud Text-to-Speech API", then create an API key and restrict it to that API). The app then uses the same clear voice on every device. Check Google's pricing and set a budget alert. If a language is not supported by the service, the app falls back to the phone voice.
 3. Animations and tricks are narrated in the chosen language: the app translates each spoken line with your AI model (a few seconds on the first play, then it is remembered).
+
+## If the tutor shows "Oops, the tutor is busy"
+1. Open `https://YOUR-SITE.onrender.com/api/test` in a browser. It tells you the exact problem (missing setting, wrong key, no credit, wrong model name).
+2. The message on screen ends with a code such as `(error 500)` = settings missing, `(error 502/401)` = wrong key, `(error 502/404)` = wrong model name or BASE_URL, `(error 502/402)` = no credit, `(error 502/429)` = limit reached.
+3. Also check Render > Logs for a line starting with `AI error`.
+4. After fixing, set `DISABLE_TEST=1` if you do not want the test page public.
+
+## Slow or empty answers with reasoning models
+Some open models "think" before answering (for example Nemotron Ultra). That uses up the token budget and is slow. For OpenRouter you can try turning thinking off by adding this variable in Render:
+
+    EXTRA_BODY={"reasoning":{"enabled":false}}
+
+If answers are still slow, choose a smaller non-reasoning "instruct" model, or Claude Haiku. Free endpoints are rate limited and may log your data, so do not use them with real children's personal information.

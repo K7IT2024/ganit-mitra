@@ -136,7 +136,7 @@ $("list").onclick=e=>{const t=e.target.closest("[data-i]");if(!t)return;const i=
 $("back").onclick=()=>{RUN++;ex=null;stopAll();$("lis").style.display="none";$("view").style.display="none";$("list").style.display="block"};
 function tab(t){RUN++;stopAll();if(t=="watch"){$("stg").innerHTML='<span class="note">Press ▶ Play to watch the lesson 🎬</span>';$("cap").textContent=""}
  ["learn","watch","notes","prac","ask"].forEach(x=>$(x).style.display=x==t?"block":"none");
- document.querySelectorAll("[data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t==t));if(t=="prac")prac();if(t=="notes"&&!$("no").textContent)$("no").textContent=NT[cl+"-"+ci]||"Tap “Make my notes” to get neat study notes for this chapter 📝"}
+ document.querySelectorAll("[data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t==t));if(t=="prac"){PR={n:0,s:0};prac()}if(t=="notes"&&!$("no").textContent)$("no").textContent=NT[cl+"-"+ci]||"Tap “Make my notes” to get neat study notes for this chapter 📝"}
 document.querySelector("#view .row").onclick=e=>{if(e.target.dataset.t)tab(e.target.dataset.t)};
 const SYS=()=>`You are Ganit Mitra, a loving, patient classroom maths teacher talking ALOUD to a CBSE (NCERT) Class ${cl} child in India. Reply in ${$("lang").value}. Speak like a real teacher in class, not like a textbook: warm spoken style ("Okay children, listen carefully..."), short sentences, small questions with a pause ("Can you guess?"), and always a real-life story or example (chocolates, cricket, rupees, mangoes) worked through slowly step by step. Say signs in words (plus, minus, times, divided by, half) and never use bullet points, markdown, tables or symbols. When a child asks a problem, give a hint first, then guide. Keep it about 120 words unless teaching a full lesson. Only maths; stay kind and child-safe.`;
 let smp=null;let VT=0,CUR=null,CLOUD=false;
@@ -151,8 +151,8 @@ function tx(t){const l=$("lang").value,k=l+"|"+t;return TC[k]||(TC[k]=(async()=>
 function chk(){const l=$("lang").value,c=LC[l].slice(0,2),y=window.speechSynthesis,has=y&&y.getVoices().some(v=>v.lang.replace("_","-").slice(0,2)==c);
  $("vn").textContent=CLOUD?"☁️ HD cloud voice is on for "+l:(has||!y||!y.getVoices().length)?"":`⚠️ This phone has no ${l} voice. Install it in Settings → Text-to-speech → Install voice data (or ask the school to turn on the cloud voice).`}
 async function S(){return async(turns,o)=>{const m=typeof turns=="string"?[{role:"user",content:turns}]:turns;
- const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:m})});
- if(!r.ok)throw{code:r.status==429?"rate_limited":"error"};const j=await r.json();o&&o.onText&&o.onText({text:j.text});return{text:j.text}}}
+ const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:m,max_tokens:o&&o.max})});
+ if(!r.ok){const e=await r.json().catch(()=>({}));throw{code:r.status==429?"rate_limited":"error",st:r.status,up:e.upstream}}const j=await r.json();o&&o.onText&&o.onText({text:j.text});return{text:j.text}}}
 const LC={English:"en-IN",Hindi:"hi-IN",Kannada:"kn-IN",Telugu:"te-IN",Tamil:"ta-IN",Marathi:"mr-IN",Bengali:"bn-IN",Gujarati:"gu-IN",Malayalam:"ml-IN",Punjabi:"pa-IN",Odia:"or-IN",Urdu:"ur-IN"};
 function clean(t){return t.replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu,"").replace(/[*#_`>|~]/g,"").replace(/^\s*[-•]\s*/gm,"")
  .replace(/(\d)\s*\/\s*(\d)/g,"$1 by $2").replace(/\s*×\s*/g," times ").replace(/(\d)\s*[x*]\s*(?=\d)/g,"$1 times ").replace(/\s*÷\s*/g," divided by ").replace(/\s*[+]\s*/g," plus ").replace(/\s*[−–]\s*(?=\d)/g," minus ").replace(/\s*=\s*/g," equals ").replace(/\n+/g,". ")}
@@ -166,17 +166,25 @@ $("mic").onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecog
 async function ai(turns,el,btns,q){const s=await S();if(!s){el.textContent="AI tutor is not available.";return}
  btns.forEach(b=>b.disabled=true);el.textContent="Thinking…";
  try{const r=await s(turns,{cache:false,onText:t=>{el.textContent=t.text}});el.textContent=r.text;if($("auto").checked&&!q)speak(r.text);return r.text}
- catch(e){el.textContent=e.code=="rate_limited"?"Too many questions. Please wait a minute and try again. 🙏":"Oops, the tutor is busy. Try again in a moment."}
+ catch(e){el.textContent=e.code=="rate_limited"?"Too many questions. Please wait a minute and try again. 🙏":"Oops, the tutor is busy. Try again in a moment."+(e.st?` (error ${e.st}${e.up?"/"+e.up:""})`:"")}
  finally{btns.forEach(b=>b.disabled=false)}}
 $("les").onclick=async()=>{await ai(SYS()+`\n\nTeach the chapter "${ch[0]}" like a teacher in class, about 200 words: greet the children, begin with an everyday story, explain the idea, work out one example slowly with real numbers, then give one tiny question for the child to try (don't give its answer) and end with encouragement.`,$("lo"),[$("les")]);$("easy").style.display="inline-block";$("lis").style.display="inline-block"};
 $("easy").onclick=()=>ai(SYS()+`\n\nExplain "${ch[0]}" again like a kind teacher to an 8 year old, with a brand new story, a fresh worked example and even simpler words.`,$("lo"),[$("easy")]);
+let PR={n:0,s:0},RT=5;
 function prac(){const k=ch[1],p=$("prac");
  if(!k){p.innerHTML=`<p>Practice for this chapter is done with the tutor 🧑‍🏫</p><button class="btn" id="gq">Give me a question</button><div class="out" id="go"></div>`;
   $("gq").onclick=()=>ai(SYS()+`\n\nGive me ONE fun practice question on "${ch[0]}". Don't reveal the answer; ask me to try.`,$("go"),[$("gq")]);return}
- const g=gen(k,cl);p.innerHTML=`<div class="q">${g.q}${/[?]$/.test(g.q)?"":" = ?"}</div><div class="row">${g.o.map(o=>`<button class="opt" data-v="${o}">${o}</button>`).join("")}</div><div id="fb"></div>`;
- let done=false;p.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(done)return;const v=+b.dataset.v;rec(v==g.ans);
-  if(v==g.ans){done=true;b.classList.add("ok");setStars(stars+1);$("fb").innerHTML=`<p class="pop">🎉 Shabash! Correct! +1 ⭐</p><button class="btn" id="nx">Next</button>`;$("nx").onclick=prac}
-  else{b.classList.add("bad");b.disabled=true;$("fb").innerHTML=`<p>Not quite, try again! 💪</p><button class="btn alt" id="hn">Need a hint?</button><div class="out" id="ho"></div>`;
+ if(PR.n>=RT){const pc=PR.s*100/RT;
+  p.innerHTML=`<h3>🏁 Round complete!</h3><div class="q">Your score: ${PR.s} / ${RT}</div><p style="text-align:center">${pc>=80?"🌟 Excellent! Shabash!":pc>=60?"👍 Good job! Keep practising.":"🌱 Keep trying, you will get better!"}</p><div class="row" style="justify-content:center"><button class="btn" id="ag">🔁 Play again</button></div>`;
+  $("ag").onclick=()=>{PR={n:0,s:0};prac()};return}
+ const g=gen(k,cl);let tries=0,done=false;
+ p.innerHTML=`<div class="row" style="justify-content:space-between"><b>Question <span>${PR.n+1}</span> of ${RT}</b><span class="stars">Score: <span id="sc">${PR.s}</span> / ${RT}</span></div>
+ <div class="note">Question:</div><div class="q">${g.q}${/[?]$/.test(g.q)?"":" = ?"}</div>
+ <div class="note">Choose the answer:</div><div class="row">${g.o.map(o=>`<button class="opt" data-v="${o}">${o}</button>`).join("")}</div><div id="fb"></div>`;
+ p.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(done)return;const v=+b.dataset.v;tries++;rec(v==g.ans);
+  if(v==g.ans){done=true;b.classList.add("ok");const pt=tries==1?1:0;if(pt){PR.s++;setStars(stars+1)}PR.n++;$("sc").textContent=PR.s;
+   $("fb").innerHTML=`<p class="pop">🎉 Shabash! Correct!</p><div class="card"><div>✅ Correct answer: <b>${g.ans}</b></div><div>Your score: <b>${PR.s}</b> / ${RT}${pt?" · +1 ⭐":" · No point this time because you needed more than one try."}</div></div><button class="btn" id="nx">${PR.n>=RT?"See my result":"Next question"}</button>`;$("nx").onclick=prac}
+  else{b.classList.add("bad");b.disabled=true;$("fb").innerHTML=`<p>❌ Not correct. Try again! 💪</p><button class="btn alt" id="hn">Need a hint?</button><div class="out" id="ho"></div>`;
    $("hn").onclick=()=>ai(SYS()+`\n\nGive only a HINT (not the answer) for: ${g.q}`,$("ho"),[$("hn")])}})}
 async function send(){const v=$("ti").value.trim();if(!v||busy)return;$("ti").value="";busy=true;
  const c=$("chat"),m=document.createElement("div");m.className="msg me";m.textContent=v;c.appendChild(m);
@@ -219,17 +227,19 @@ function draw(f){f=f||{};const n=v=>Math.max(0,Math.min(+v||0,99));
  if(f.t=="shape"){const S={circle:'<circle cx="50" cy="50" r="40"/>',square:'<rect x="15" y="15" width="70" height="70"/>',triangle:'<polygon points="50,12 90,85 10,85"/>',rectangle:'<rect x="8" y="28" width="84" height="44"/>'},k=S[f.s]?f.s:"circle";return`<div style="text-align:center"><svg viewBox="0 0 100 100" fill="#a5b4fc" stroke="#4f46e5" stroke-width="3">${S[k]}</svg><b>${k}</b></div>`}
  if(f.t=="bars"&&Array.isArray(f.v)){const v=f.v.slice(0,8).map(n),mx=Math.max(...v,1);return'<div class="bars">'+v.map(x=>`<i style="height:${Math.max(18,x/mx*130)}px">${x}</i>`).join("")+"</div>"}
  return'<span class="big">🦉</span>'}
-function parseSc(t){try{t=t.replace(/```json|```/g,"");const a=JSON.parse(t.slice(t.indexOf("["),t.lastIndexOf("]")+1));const r=a.filter(x=>x&&typeof x.say=="string").slice(0,8);return r.length>=3?r:null}catch(e){return null}}
+function parseSc(t){t=(t||"").replace(/```json|```/g,"");const i=t.indexOf("[");if(i<0)return null;t=t.slice(i).replace(/,\s*([}\]])/g,"$1");
+ const fx=a=>{const r=(Array.isArray(a)?a:[]).filter(x=>x&&typeof x.say=="string").slice(0,8);return r.length>=2?r:null};
+ try{const r=fx(JSON.parse(t.slice(0,t.lastIndexOf("]")+1)));if(r)return r}catch(e){}
+ for(let j=t.lastIndexOf("}");j>0;j=t.lastIndexOf("}",j-1)){try{const r=fx(JSON.parse(t.slice(0,j+1).replace(/,\s*$/,"")+"]"));if(r)return r}catch(e){}}return null}
 async function aiVideo(id){const st=$("stg"),L=LC[$("lang").value],lg=$("lang").value,key=cl+"-"+ci+"-"+lg,ok=()=>{if(id!==RUN)throw 0};
- st.className="stage board";st.innerHTML='<span class="note">🦉 Preparing your video…</span>';$("cap").textContent="";
+ st.className="stage board";st.innerHTML='<span class="note">🦉 Preparing your video… this can take up to a minute</span>';$("cap").textContent="";
  try{let sc=!FRESH&&VC[key];FRESH=0;
   if(!sc){const s=await S();if(!s){st.textContent="AI is not available.";return}
-   const r=await s(`You are a kind CBSE maths teacher writing a short animated video script for a Class ${cl} child, chapter "${ch[0]}", in ${lg}. Return ONLY a JSON array of 6 scenes and nothing else. Each scene: {"say":"1 or 2 short spoken sentences in ${lg}, teacher style, signs said in words","board":"one short line of maths written with symbols, or empty string","fig":{...}}. fig is exactly one of: {"t":"emoji","e":"🍎","n":5} (n up to 12), {"t":"line","a":0,"b":10,"m":6} (number line from a to b, marking m), {"t":"shape","s":"circle"} (circle, square, triangle or rectangle), {"t":"bars","v":[3,5,2,6]}, or {"t":"none"}. Scene 1 greets the children and starts with a real-life story, scenes 2 to 5 explain step by step with one worked example using real numbers, scene 6 gives one small try-it question with encouragement. Make sure every number and calculation is correct.`,{cache:false});ok();
-   sc=parseSc(r.text);if(!sc){st.textContent="Sorry, the video could not be made. Tap New example to try again.";return}VC[key]=sc}
+   const q=`You are a kind CBSE maths teacher writing a short animated video script for a Class ${cl} child, chapter "${ch[0]}", in ${lg}. Return ONLY a JSON array of 6 scenes and nothing else. Each scene: {"say":"1 or 2 short spoken sentences (each "say" under 25 words) in ${lg}, teacher style, signs said in words","board":"one short line of maths written with symbols, or empty string","fig":{...}}. fig is exactly one of: {"t":"emoji","e":"🍎","n":5} (n up to 12), {"t":"line","a":0,"b":10,"m":6} (number line from a to b, marking m), {"t":"shape","s":"circle"} (circle, square, triangle or rectangle), {"t":"bars","v":[3,5,2,6]}, or {"t":"none"}. Scene 1 greets the children and starts with a real-life story, scenes 2 to 5 explain step by step with one worked example using real numbers, scene 6 gives one small try-it question with encouragement. Make sure every number and calculation is correct.`;let last="";for(let n=0;n<2&&!sc;n++){const r=await s(q+(n?" IMPORTANT: keep it very short, every say under 15 words, and return valid JSON only.":""),{cache:false,max:2500});ok();last=r.text||"";sc=parseSc(r.text)}if(!sc){st.textContent="Sorry, the video could not be made. Tap New example to try again."+(last?" (AI replied: "+last.slice(0,120)+")":" (the AI sent an empty reply)");return}VC[key]=sc}
   st.innerHTML='<div class="fig"></div><div class="bd"></div>';const fg=st.children[0],bd=st.children[1];
   for(const x of sc){ok();fg.innerHTML=draw(x.fig);if(x.board&&String(x.board).trim())bd.insertAdjacentHTML("beforeend",`<div class="stp">${esc(String(x.board).slice(0,80))}</div>`);$("cap").textContent=x.say;await say(x.say,L);ok()}
   $("cap").textContent="🎉 Shabash! Tap ▶ Play to watch again, or 🔁 New example for a fresh story."}
- catch(e){if(e!==0)st.textContent="Oops, please try again."}}
+ catch(e){if(e!==0)st.textContent="Oops, please try again."+(e&&e.st?" (error "+e.st+(e.up?"/"+e.up:"")+")":"")}}
 async function play(){const id=++RUN;stopAll();if(!(ch[1]>=1&&ch[1]<=6&&cl<6))return aiVideo(id);if(!ex)ex=newEx();const st=$("stg");st.innerHTML="";
  const hi=$("lang").value=="Hindi",L=LC[$("lang").value],T=(e,h)=>hi?h:e,K=ch[1],{o,a,b,q,n,h,w}=ex,nm=hi?o[2]:o[1],em=o[0],ok=()=>{if(id!==RUN)throw 0};
  const cap=async t=>{ok();if(needTx(1))t=await tx(t);ok();$("cap").textContent=t;await say(t,L);ok()},wt=async m=>{await SP(m);ok()},add=e=>(st.appendChild(e),e);
@@ -319,7 +329,7 @@ async function ui(){if(UB){UB=2;return}UB=1;const l=$("lang").value,miss=new Set
   if(l=="English"){if(n.data!==o)n.data=o;n._d=undefined;continue}
   const t=(UI[l]||{})[c];if(t){const v=o.replace(c,()=>t);if(n.data!==v)n.data=v;n._d=n.data}else miss.add(c)}
  if(miss.size){$("tn").textContent="🌐 Translating…";const a=[...miss],B=[];for(let i=0;i<a.length;i+=40)B.push(a.slice(i,i+40));const sm=await S();
-  if(sm)await Promise.all(B.map(async b=>{try{const r=await sm(`Translate these short texts from a school maths app into ${l}. Keep emojis, numbers and maths symbols. Return ONLY a JSON array of exactly ${b.length} strings in the same order.\n`+JSON.stringify(b),{});const t=r.text,x=JSON.parse(t.slice(t.indexOf("["),t.lastIndexOf("]")+1));
+  if(sm)await Promise.all(B.map(async b=>{try{const r=await sm(`Translate these short texts from a school maths app into ${l}. Keep emojis, numbers and maths symbols. Return ONLY a JSON array of exactly ${b.length} strings in the same order.\n`+JSON.stringify(b),{max:3000});const t=r.text,x=JSON.parse(t.slice(t.indexOf("["),t.lastIndexOf("]")+1));
    if(x.length==b.length){UI[l]=UI[l]||{};b.forEach((k,j)=>{if(typeof x[j]=="string")UI[l][k]=x[j]})}}catch(e){}}));
   try{localStorage.setItem("gmu",JSON.stringify(UI))}catch(e){}$("tn").textContent="";UB=2}
  const again=UB==2;UB=0;if(again)setTimeout(ui,300)}
